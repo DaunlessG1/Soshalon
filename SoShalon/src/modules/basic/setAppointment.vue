@@ -142,10 +142,10 @@
                                 <br />
                                 <div class="col mb-3">
                                   <div class="col d-flex justify-content-end">
-                                    <button v-on:click="alertDisplay1" class="btn btn-danger">CANCEL</button>
+                                    <button v-on:click="alertDisplay1()" class="btn btn-danger">CANCEL</button>
                                     <br />
                                     <br />
-                                    <button v-on:click="alertDisplay" class="btn btn-info">SUBMIT</button>
+                                    <button v-on:click="alertDisplay()" class="btn btn-info">SUBMIT</button>
                                   </div>
                                 </div>
                               </div>

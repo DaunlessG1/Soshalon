@@ -7,34 +7,14 @@
               <b-card-img src="/sp1.jpg" class="rounded-0"></b-card-img>
             </b-col>
             <b-col md="6">
-              <b-card-body title="Nadine Lustre">
+              <b-card-body :title="fullname">
                 <b-card-text>
-                 Nasipit, Talamban, Cebu City<br><br>
-                 Available <br>Schedule: Mon-Fri 8:00AM - 4:00PM<br>
-                 Offered Services: Nail Polish, Haircut<hr>
+                 {{address}}<br><br>
+                 Available <br>Schedule: {{sched}}<br>
+                 Offered Services: {{offerredService}}<hr>
 
                  <a href="#" class="card-link">More</a> 
                  <a href="#" class="card-link" @click = "set()">Set Appointment</a>
-                </b-card-text>
-              </b-card-body>
-            </b-col>
-          </b-row>
-        </b-card>
-        
-        <b-card no-body class="overflow-hidden" style="max-width: 540px;">
-          <b-row no-gutters>
-            <b-col md="6">
-              <b-card-img src="/sp2.jpg" class="rounded-0"></b-card-img>
-            </b-col>
-            <b-col md="6">
-              <b-card-body title="Kathryn Bernardo">
-                <b-card-text>
-                 Nasipit, Talamban, Cebu City<br><br>
-                 Available <br>Schedule: Mon-Fri 8:00AM - 4:00PM<br>
-                 Offered Services: Nail Polish, Haircut<hr>
-
-                 <a href="#" class="card-link">More</a> 
-                 <a href="#" class="card-link">Set Appointment</a>
                 </b-card-text>
               </b-card-body>
             </b-col>
@@ -49,9 +29,15 @@
 import router from "router"
 export default {
   name: "dashboard",
+  props: {
+      id: String,
+      fullname: String,
+      address: String,
+      sched: String,
+      offerredService: String,
+  },
   data() {
     return {
-      fn: fullname,
       isHidden: false
     };
   },

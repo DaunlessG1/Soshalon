@@ -8,21 +8,15 @@ var UserSchema = new Schema({
   },
   username: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   },
   password: {
     type: String,
     required: true
   },
   img: { 
-<<<<<<< HEAD
-    type:String,
-    required: false
-=======
    type:String,
    required: false
->>>>>>> 13b5decb83995ecfb07d1be15b0ab3c4702ed740
   },
   fullname: {
     type: String,
@@ -47,7 +41,12 @@ var UserSchema = new Schema({
   description: {
     type: String,
     required: false
-  }//,
+  },
+  post:{
+    type: Boolean,
+    required: false
+  }
+  //,
   // schedule: {
   //   type: String,
   //   required: false,

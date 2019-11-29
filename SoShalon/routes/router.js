@@ -15,9 +15,10 @@ const fileFilter = (req, file, cb) => {
   if (!allowedTypes.includes(file.mimetype)) {
     const error = new Error("Incorrect file");
     error.code = "INCORRECT_FILETYPE";
+    //file+=".jpg"
     return cb(error, false)
   }
-  cb(null, true);
+  cb(null, file.originalname);
 }
 const upload = multer({
   dest: './uploads',
@@ -25,18 +26,16 @@ const upload = multer({
   limits: {
     fileSize: 5000000
   }
+  // filename: function (req, file, cb) {
+  //   cb(null, Date.now() + '.jpg') //Appending .jpg
+  // }
+
 });
-<<<<<<< HEAD
 
-
-
-=======
-var imagepath = "";
->>>>>>> 13b5decb83995ecfb07d1be15b0ab3c4702ed740
 router.post('/upload', upload.single('file'), (req, res) => {
   res.json({ file: req.file });
-  imagepath = req.file.path
-  console.log(imagepath)
+  //imagepath = req.file.path +".jpg"
+  //console.log(imagepath)
 });
 
 router.use((err, req, res, next) => {
@@ -50,6 +49,19 @@ router.use((err, req, res, next) => {
   }
 });
 
+
+// fetch users that matches in search tab
+router.get('/search', function(req,res){
+  User.find({address: req.body.address, service1: req.body.service, service2:req.body.service}, (err,users)=>{
+    if(err){
+      res.send(err)
+    }
+    res.json({data:users})
+  })
+})
+
+
+
 //fetch current User
 router.get('/profile', function (req, res) {
   User.find({ _id: userId }, (err, user) => {
@@ -61,6 +73,16 @@ router.get('/profile', function (req, res) {
   });
 })
 
+//fetch all user
+router.get('/dashboard', function(req,res){
+  User.find({}, (err,users)=>{
+    if(err){
+      res.send(err)
+    }
+    res.json({data:users})
+  })
+})
+
 //login authentication
 router.post('/auth', function (req, res, next) {
   if (req.body.username && req.body.password) {
@@ -68,7 +90,7 @@ router.post('/auth', function (req, res, next) {
       if (error || !user) {
         var err = new Error('Wrong email or password.');
         res.status(401).json({ message: err.message })
-        return next(err);
+        //return next(err);
       } else {
         req.session.userId = user._id;
         //req.session.password = user.password;
@@ -98,24 +120,20 @@ router.post('/create', function (req, res) {
 })
 
 router.post('/updateProfile', function (req, res) {
-  var email = req.body.email.trim();
+  var email = req.body.email;
   var username = req.body.username.trim();
-  var fullname = req.body.fullname.trim();
-  var fb = req.body.fb.trim();
-  var contactNo = req.body.contactNo.trim();
+  var address = req.body.address;
+  var fullname = req.body.fullname;
+  var fb = req.body.fb;
+  var contactNo = req.body.contactNo;
   var service1 = req.body.service1
   var service2 = req.body.service2
-  var description = req.body.description.trim();
-<<<<<<< HEAD
-  var Password = req.body.Password.trim();
+  var description = req.body.description;
+  var Password = req.body.Password;
   var image = req.body.imagepath;
-  User.update({ _id :userId}, { $set: { fullname: fullname, email: email, username: username, fb: fb, contactNo: contactNo, service1: service1, service2, service2, description: description, password: Password, img: image } }, function (err, result) {
-=======
-  var newPassword = req.body.newPassword.trim();
-  var imagepath1 = imagepath;
-  User.update({ _id: userId }, { $set: { fullname: fullname, email: email, username: username, fb: fb, contactNo: contactNo, service1: service1, service2, service2, description: description, password: newPassword,img:imagepath1 } }, function (err, result) {
+  var post = req.body.post;
+  User.update({ _id :userId}, { $set: { fullname: fullname, email: email, username: username,address:address,fb: fb, contactNo: contactNo, service1: service1, service2, service2, description: description, password: Password, img: image, post:post } }, function (err, result) {
     console.log(result)
->>>>>>> 13b5decb83995ecfb07d1be15b0ab3c4702ed740
     if (err) {
       console.log(err);
       res.status(401).json({ message: err.message })

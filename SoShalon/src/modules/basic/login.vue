@@ -88,7 +88,7 @@ export default {
 body {
     background-repeat: no-repeat;
     background-size:cover;
-    background-image: url("https://png.pngtree.com/thumb_back/fw800/background/20190223/ourmid/pngtree-dark-purple-geometric-minimalist-background-effectgradientbusiness-image_87387.jpg");
+    background-image: url("/bg.jpg");
 }
 #login-form {
     width: 450px;

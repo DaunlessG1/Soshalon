@@ -6,7 +6,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from 'router';
 // swall fire
 import VueSweetalert2 from 'vue-sweetalert2';
- 
+import 'sweetalert2/dist/sweetalert2.min.css'
 // If you don't need the styles, do not connect
 //import 'sweetalert2';
  // to use the swal fire

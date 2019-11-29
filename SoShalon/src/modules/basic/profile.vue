@@ -2,9 +2,7 @@
   <div>
     <Header2></Header2>
     <link
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-      rel="stylesheet"
-    >
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <br>
     <br>
     <div class="container">
@@ -22,7 +20,7 @@
                             class="d-flex justify-content-center align-items-center rounded"
                             style="height: 140px; background-color: rgb(233, 236, 239);"
                           >
-                            <img src ="" class="image" id="img">
+                            <img src class="image" id="img">
                           </div>
                         </div>
                       </div>
@@ -93,6 +91,19 @@
                               <div class="row">
                                 <div class="col">
                                   <div class="form-group">
+                                    <label>Adress</label>
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      v-model="input.address"
+                                      :placeholder="[[this.address]]"
+                                    >
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="form-group">
                                     <label>Facebook Messenger</label>
                                     <input
                                       class="form-control"
@@ -121,18 +132,20 @@
                                 <br>
                                 <label class="checkbox-inline">
                                   <input
+                                    id="service1"
                                     type="checkbox"
                                     value="NailPolish"
-                                    v-model="input.service1"
+                           
                                     :placeholder="[[this.service1]]"
                                   >Nail Polish
                                 </label>
                                 <br>
                                 <label class="checkbox-inline">
                                   <input
+                                    id="service2"
                                     type="checkbox"
                                     value="Haircut"
-                                    v-model="input.service2"
+                             
                                     :placeholder="[[this.service2]]"
                                   >Hair cut
                                 </label>
@@ -221,10 +234,10 @@
                               <br>
                               <label class="checkbox-inline">
                                 <input
+                                  id="checkboxpost"
                                   type="checkbox"
-                                  value="true"
-                                  v-model="input.service1"
-                                  :placeholder="[[this.service1]]"
+                                  :value="this.ispost"
+                                  :placeholder="[[this.ispost]]"
                                 >Post Profile
                               </label>
                             </div>
@@ -271,25 +284,26 @@ export default {
   name: "profile",
   data() {
     return {
+      ispost: $("#checkboxpost").val(),
       file: "",
       fullname: "",
       email: "",
       username: "",
       fb: "",
       contactNo: "",
-      service1: "",
-      service2: "",
+      service1: $("#service1").val(),
+      service2: $("#service2").val(),
       description: "",
       password: "",
-      img:"",
-      input: {
+      img: "",
+      address:"",
+      input: {    
         fullname: "",
         username: "",
         email: "",
+        address:"",
         fb: "",
         contactNo: "",
-        service1: "",
-        service2: "",
         description: "",
         currentPassword: "",
         newPassword: "",
@@ -312,107 +326,104 @@ export default {
         this.service1 = response.data.data[i].service1;
         this.service2 = response.data.data[i].service2;
         this.description = response.data.data[i].description;
-<<<<<<< HEAD
-        this.password = response.data.data[i].password;
+        this.img = response.data.data[i].img;
+        this.address = response.data.data[i].address;
       }
     });
   },
-=======
 
-        //alert(response.data.data[i].username)
-      }
-      //alert(response.data.data.email)
-    });
-  },
-
->>>>>>> 13b5decb83995ecfb07d1be15b0ab3c4702ed740
   methods: {
-    cancel(){
+    alertSuccess() {
+      this.$swal({
+        type: "success",
+        title: "SUCCESS!",
+        text: "Your Profile has been updated"
+      });
+    },
+    cancel() {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {
-      if(this.input.fullname == ""){
+      if (this.input.fullname == "") {
         this.input.fullname = this.fullname;
       }
-      if(this.input.fb == ""){
+      if (this.input.fb == "") {
         this.input.fb = this.fb;
       }
-      if(this.input.contactNo == ""){
+      if (this.input.contactNo == "") {
         this.input.contactNo = this.contactNo;
       }
-      if(this.input.service1 == ""){
-        this.input.service1 = this.service1;
-      }
-      if(this.input.service2 == ""){
-        this.input.service2 = this.service1;
-      }
-      if(this.input.description == ""){
+      if (this.input.description == "") {
         this.input.description = this.description;
       }
-      if(this.input.Password == ""){
-        this.input.Password = this.Password;
+      if(this.input.address == ""){
+        this.input.address == this.address;
       }
-      var data = {
-        fullname: this.input.fullname,
-        fb: this.input.fb,
-        contactNo: this.input.contactNo,
-        service1: this.input.service1,
-        service2: this.input.service2,
-        description: this.input.description,
-        Password: this.input.newPassword,
-        email: this.input.email,
-<<<<<<< HEAD
-        username: this.input.username,
-        imagepath : this.img
-=======
-        username: this.input.username
->>>>>>> 13b5decb83995ecfb07d1be15b0ab3c4702ed740
-      };
-
-      if(this.input.newPassword != ""){
+      if(this.input.email == ""){
+        this.input.email == this.email;
+      }
+      if (this.input.password == "") {
+        alert(fasd)
+        var data2 = {
+          fullname: this.input.fullname,
+          fb: this.input.fb,
+          contactNo: this.input.contactNo,
+          service1: this.service1,
+          service2: this.service2,
+          description: this.input.description,
+          email: this.input.email,
+          username: this.input.username,
+          imagepath: this.img,
+          post: this.ispost,
+          address : this.input.address
+        };
+        axios.post("http://localhost:3000/updateProfile", data2).then(
+              response => {
+                if (response.data.message == "ok") {
+                  console.log("ok");
+                  this.alertSuccess();
+                }
+              },
+              err => {
+                console.log(err);
+              }
+        );
+      }
+       else {
+        var data = {
+          fullname: this.input.fullname,
+          fb: this.input.fb,
+          contactNo: this.input.contactNo,
+          service1: this.service1,
+          service2: this.service2,
+          description: this.input.description,
+          Password: this.input.newPassword,
+          email: this.input.email,
+          username: this.input.username,
+          imagepath: this.img,
+          post: this.ispost,
+          address : this.input.address
+        };
+        //alert(this.post)
         AUTH.passwordValidation(this.input.newPassword);
         if (AUTH.passwordValid == 1) {
           if (this.input.newPassword == this.input.ConfirmPassword) {
             axios.post("http://localhost:3000/updateProfile", data).then(
-            response => {
-              if (response.data.message == "ok") {
-                console.log("ok");
-                //router.push({ path: "/login" });
+              response => {
+                if (response.data.message == "ok") {
+                  console.log("ok");
+                  this.alertSuccess();
+                  //router.push({ path: "/login" });
+                }
+              },
+              err => {
+                console.log(err);
               }
-            },
-            err => {
-              console.log(err);
-            }
             );
-          }else {
+          } else {
             alert("Password did not match");
           }
         }
-      }
-      else{
-        var data2 = {
-        fullname: this.input.fullname,
-        fb: this.input.fb,
-        contactNo: this.input.contactNo,
-        service1: this.input.service1,
-        service2: this.input.service2,
-        description: this.input.description,
-        email: this.input.email,
-        username: this.input.username,
-        Password : this.password,
-        imagepath : this.img
-      };
-        axios.post("http://localhost:3000/updateProfile", data2).then(
-          response => {
-          if (response.data.message == "ok") {
-            console.log("ok");
-            //router.push({ path: "/login" });
-            }
-          },
-          err => {
-            console.log(err);
-          }
-        );
       }
     },
     onSelect() {
@@ -433,17 +444,16 @@ export default {
       const formData = new FormData();
       formData.append("file", this.file);
       try {
-<<<<<<< HEAD
-        await axios.post("http://localhost:3000/upload", formData)
-        .then(response =>{
-          this.img = response.data.file.path
-          //console.log(response.data.file)
-        });
-
-=======
-        await axios.post("http://localhost:3000/upload", formData);
-        this.message = "Uploaded!!";
->>>>>>> 13b5decb83995ecfb07d1be15b0ab3c4702ed740
+        await axios
+          .post("http://localhost:3000/upload", formData)
+          .then(response => {
+            this.img = response.data.file.path + ".jpg";
+            //console.log(this.img)
+            //this.message = "Uploaded!!"
+          });
+        err => {
+          console.log(err);
+        };
       } catch (err) {
         console.log(err);
         this.message = err.response.data.error;
