@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../model/user');
 var userId;
 const multer = require("multer");
+const fs = require('fs');
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
@@ -10,44 +11,29 @@ router.get('/', function (req, res, next) {
 });
 
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (!allowedTypes.includes(file.mimetype)) {
-    const error = new Error("Incorrect file");
-    error.code = "INCORRECT_FILETYPE";
-    //file+=".jpg"
-    return cb(error, false)
-  }
-  cb(null, file.originalname);
-}
-const upload = multer({
-  dest: './uploads',
-  fileFilter,
-  limits: {
-    fileSize: 5000000
-  }
-  // filename: function (req, file, cb) {
-  //   cb(null, Date.now() + '.jpg') //Appending .jpg
-  // }
-
-});
-
-router.post('/upload', upload.single('file'), (req, res) => {
-  res.json({ file: req.file });
-  //imagepath = req.file.path +".jpg"
-  //console.log(imagepath)
-});
-
-router.use((err, req, res, next) => {
-  if (err.code === "INCORRECT_FILETYPE") {
-    res.status(422).json({ error: 'Only images are allowed' });
-    return;
-  }
-  if (err.code === "LIMIT_FILE_SIZE") {
-    res.status(422).json({ error: 'Allow file size is 500KB' });
-    return;
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/')
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.originalname);
   }
 });
+
+router.post('/api/file',function(req,res){
+    var upload = multer({ storage : storage}).single('file');
+    upload(req,res,function(err) {
+        if(err) {
+          console.log(err)
+            return res.end("Error uploading file.");
+        }
+        console.log(req.file)
+        res.send(req.file)
+        //res.end("File is uploaded");
+    });
+});
+
+
 
 
 // fetch users that matches in search tab
@@ -73,7 +59,7 @@ router.get('/profile', function (req, res) {
   });
 })
 
-//fetch all user
+//fetch all users
 router.get('/dashboard', function(req,res){
   User.find({}, (err,users)=>{
     if(err){
@@ -105,6 +91,7 @@ router.post('/auth', function (req, res, next) {
     return next(err);
   }
 })
+
 //register save to db
 router.post('/create', function (req, res) {
   let user = new User(req.body)
@@ -119,8 +106,10 @@ router.post('/create', function (req, res) {
     })
 })
 
+//update user's profile
 router.post('/updateProfile', function (req, res) {
   var email = req.body.email;
+  //console.log(email)
   var username = req.body.username.trim();
   var address = req.body.address;
   var fullname = req.body.fullname;
@@ -131,7 +120,22 @@ router.post('/updateProfile', function (req, res) {
   var image = req.body.imagepath;
   var post = req.body.post;
   var service = req.body.service;
-  User.update({ _id :userId}, { $set: { fullname: fullname, email: email, username: username,address:address,fb: fb, contactNo: contactNo, description: description, password: Password, img: image, post:post, serviceOffered: service } }, function (err, result) {
+  var schedDate = req.body.date;
+  var time = req.body.time;
+  User.update({ _id :userId}, { $set: { fullname:fullname,
+  email : email,
+  username :username,
+  address: address,
+  fb : fb,
+  contactNo : contactNo,
+  description : description,
+  Password : Password,
+  img : image,
+  post : post,
+  service : service,
+  date: schedDate,
+  time:time
+ } }, function (err, result) {
     console.log(result)
     if (err) {
       console.log(err);

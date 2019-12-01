@@ -7,7 +7,7 @@
           v-bind:id="user._id"
           v-bind:fullname="user.fullname"
           v-bind:address="user.address"
-          v-bind:sched="user.email"
+          v-bind:sched="user.date + ' - ' + user.time"
           v-bind:serviceOffered="user.serviceOffered" 
         />
       </div>

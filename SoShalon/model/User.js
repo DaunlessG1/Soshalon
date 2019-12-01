@@ -45,6 +45,14 @@ var UserSchema = new Schema({
   post:{
     type: Boolean,
     required: false
+  },
+  date:{
+    type: Date,
+    required: false
+  },
+  time:{
+    type:String,
+    required: false
   }
   //,
   // schedule: {

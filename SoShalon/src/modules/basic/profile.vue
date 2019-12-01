@@ -32,12 +32,12 @@
                           <div class="input-group">
                             <form @submit.prevent="onSubmit" enctype="multipart/form-data">
                               <div class="fields">
-                                <label>Upload File</label>
+                                
                                 <br>
-                                <input type="file" ref="file" @change="onSelect()">
+                                <input type="file" ref="file" name="file" @change="onSelect()">
                               </div>
                               <div class="fields">
-                                <button>Submit</button>
+                                <button class ="btn btn-primary">Submit</button>
                               </div>
                             </form>
                           </div>
@@ -82,8 +82,9 @@
                                     <input
                                       class="form-control"
                                       type="text"
+                                      name="email"
                                       v-model="input.email"
-                                      :placeholder="[[this.email]]"
+                                      :placeholder="[[ this.email ]]"
                                     >
                                   </div>
                                 </div>
@@ -91,12 +92,13 @@
                               <div class="row">
                                 <div class="col">
                                   <div class="form-group">
-                                    <label>Adress</label>
+                                    <label>Address</label>
                                     <input
                                       class="form-control"
                                       type="text"
+                                      name="address"
                                       v-model="input.address"
-                                      :placeholder="[[this.address]]"
+                                      :placeholder="[[ this.address ]]"
                                     >
                                   </div>
                                 </div>
@@ -128,15 +130,13 @@
                                 </div>
                               </div>
                               <div class="container">
-                                <b>What service/s do you offer?</b>
-                                <br>
+                                <b>What service/s do you offer?</b><br>
                                 <input type="checkbox" id="service1" value="HairCut" v-model="checkedService">
                                 <label for="HairCut">Hair Cut</label>
                                 <br>
                                 <input type="checkbox" id="service2" value="NailPolish" v-model="checkedService">
-                                <label for="NailPolish">Nail Polish</label>
-                                <br>
-                                <span>Service/s Offered: {{checkedService}}</span>
+                                <label for="NailPolish">Nail Polish</label><br>
+                                <span>Service/s Offered: {{service}}</span>
                               </div>
                               <div class="row">
                                 <div class="col mb-3">
@@ -153,21 +153,17 @@
                               </div>
                             </div>
                           </div>
-
+                          <b>Set your Schedule</b><br>
                           <div class="row">
-                            <b>Set your Schedule</b>
-                            <br>
-                            <div class="col">
-                              <div class="form-group">
-                                <label>From</label>
-                                <input class="form-control" type="text" placeholder value>
-                              </div>
+                            <div class="col mb-3">
+                            <div class="form-group">
+                              <label>Date :  </label>
+                              <input type="date" id="myDate"  v-model="input.date">
+                              <label>From :  </label>
+                              <input type="time" name="timeFrom" v-model="input.timeFrom">
+                              <label>To :   </label>
+                              <input type="time" name="timeTo"  v-model="input.timeTo">
                             </div>
-                            <div class="col">
-                              <div class="form-group">
-                                <label>To</label>
-                                <input class="form-control" type="text" name placeholder value>
-                              </div>
                             </div>
                           </div>
 
@@ -258,16 +254,19 @@
   </div>
 </template>
 <script>
+
 import $ from "jquery";
 import Header2 from "components/frame/Header2.vue";
 import AUTH from "services/auth";
 import axios from "axios";
 import router from "router";
+//import DateTimePicker from 'vue-vanilla-datetime-picker';
 sessionStorage.setItem("token", false);
 export default {
   name: "profile",
   data() {
     return {
+      service:[],
       checkedService :[],
       Postchecked: "",
       file: "",
@@ -280,6 +279,9 @@ export default {
       password: "",
       img: "",
       address:"",
+      date:"2019-00-00",
+      timeFrom:"00:00:00",
+      timeTo:"00:00:00",
       input: {    
         fullname: "",
         username: "",
@@ -290,7 +292,10 @@ export default {
         description: "",
         currentPassword: "",
         newPassword: "",
-        ConfirmPassword: ""
+        ConfirmPassword: "",
+        date:"",
+        timeFrom:"",
+        timeTo:""
       }
     };
   },
@@ -306,15 +311,19 @@ export default {
         this.email = response.data.data[i].email;
         this.fb = response.data.data[i].fb;
         this.contactNo = response.data.data[i].contactNo;
-        //this.checkedService = response.data.data[i].serviceOffered;
+        this.service = response.data.data[i].serviceOffered;
         this.description = response.data.data[i].description;
         this.img = response.data.data[i].img;
         this.address = response.data.data[i].address;
+        this.date = reponse.data.data[i].date;
       }
     });
   },
 
   methods: {
+    // showdate(){
+    //  datepicker
+    // },
     alertSuccess() {
       this.$swal({
         type: "success",
@@ -326,7 +335,8 @@ export default {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {
-     // alert(this.Postchecked)
+      alert(this.input.date + this.input.timeFrom + this.input.timeTo)
+
       if (this.input.fullname == "") {
         this.input.fullname = this.fullname;
       }
@@ -348,22 +358,25 @@ export default {
       if(this.input.username == ""){
         this.input.username = this.username;
       }
-      if (this.input.password == "") {
-        alert("fasd")
-        var data2 = {
+      if (this.input.password != "") {
+        var data = {
           fullname: this.input.fullname,
           fb: this.input.fb,
           contactNo: this.input.contactNo,
           description: this.input.description,
+          Password: this.input.newPassword,
           email: this.input.email,
           username: this.input.username,
           imagepath: this.img,
           post: this.Postchecked,
           address : this.input.address,
-          service: this.checkedService
+          service: this.checkedService,
+          date:this.input.date,
+          time : this.input.timeFrom +" "+ this.input.timeTo
         };
-        axios.post("http://localhost:3000/updateProfile", data2).then(
+        axios.post("http://localhost:3000/updateProfile", data).then(
               response => {
+                //alert(this.email)
                 if (response.data.message == "ok") {
                   console.log("ok");
                   this.alertSuccess();
@@ -375,26 +388,25 @@ export default {
         );
       }
        else {
-        var data = {
+        var data2 = {
           fullname: this.input.fullname,
           fb: this.input.fb,
           contactNo: this.input.contactNo,
-          service1: this.service1,
-          service2: this.service2,
           description: this.input.description,
-          Password: this.input.newPassword,
           email: this.input.email,
           username: this.input.username,
           imagepath: this.img,
           post: this.Postchecked,
           address : this.input.address,
-          service: this.checkedService
+          service: this.checkedService,
+          date:this.input.date,
+          time : this.input.timeFrom +" "+ this.input.timeTo
         };
         //alert(this.post)
         AUTH.passwordValidation(this.input.newPassword);
         if (AUTH.passwordValid == 1) {
           if (this.input.newPassword == this.input.ConfirmPassword) {
-            axios.post("http://localhost:3000/updateProfile", data).then(
+            axios.post("http://localhost:3000/updateProfile", data2).then(
               response => {
                 if (response.data.message == "ok") {
                   console.log("ok");
@@ -431,11 +443,11 @@ export default {
       formData.append("file", this.file);
       try {
         await axios
-          .post("http://localhost:3000/upload", formData)
+          .post("http://localhost:3000/api/file", formData)
           .then(response => {
-            this.img = response.data.file.path + ".jpg";
-            //console.log(this.img)
-            //this.message = "Uploaded!!"
+            //this.img = response.data.file.path;
+            console.log(response.file.path)
+          
           });
         err => {
           console.log(err);
@@ -456,6 +468,25 @@ export default {
 body {
   margin-top: 20px;
   background: #f8f8f8;
+}
+label{
+  color:palevioletred;
+
+  font-family: Arial;
+  font-size: 15px;
+}
+input [type=text]{
+  width: 100%;
+  padding: 10px 10px;
+  margin: 2px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+b{
+  padding: 2px;
+  font-family: Arial;
+  font-size: 15px;
 }
 </style>
 

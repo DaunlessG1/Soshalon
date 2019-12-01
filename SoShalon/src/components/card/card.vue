@@ -9,9 +9,9 @@
             <b-col md="6">
               <b-card-body :title="fullname">
                 <b-card-text>
-                 {{address}}<br><br>
-                 Available <br>Schedule: {{sched}}<br>
-                 Offered Services: {{serviceOffered}}<hr>
+                 Adress : {{address}}<br><br>
+                 Available Schedule : {{sched}}<br>
+                 Offered Services : {{serviceOffered}}<hr>
 
                  <a href="#" class="card-link">More</a> 
                  <a href="#" class="card-link" @click = "set()">Set Appointment</a>
