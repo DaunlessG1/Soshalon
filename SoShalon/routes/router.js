@@ -126,13 +126,12 @@ router.post('/updateProfile', function (req, res) {
   var fullname = req.body.fullname;
   var fb = req.body.fb;
   var contactNo = req.body.contactNo;
-  var service1 = req.body.service1
-  var service2 = req.body.service2
   var description = req.body.description;
-  var Password = req.body.Password;
+  var Password = req.body.Password.trim();
   var image = req.body.imagepath;
   var post = req.body.post;
-  User.update({ _id :userId}, { $set: { fullname: fullname, email: email, username: username,address:address,fb: fb, contactNo: contactNo, service1: service1, service2, service2, description: description, password: Password, img: image, post:post } }, function (err, result) {
+  var service = req.body.service;
+  User.update({ _id :userId}, { $set: { fullname: fullname, email: email, username: username,address:address,fb: fb, contactNo: contactNo, description: description, password: Password, img: image, post:post, serviceOffered: service } }, function (err, result) {
     console.log(result)
     if (err) {
       console.log(err);

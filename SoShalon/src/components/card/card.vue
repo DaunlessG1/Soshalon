@@ -11,7 +11,7 @@
                 <b-card-text>
                  {{address}}<br><br>
                  Available <br>Schedule: {{sched}}<br>
-                 Offered Services: {{offerredService}}<hr>
+                 Offered Services: {{serviceOffered}}<hr>
 
                  <a href="#" class="card-link">More</a> 
                  <a href="#" class="card-link" @click = "set()">Set Appointment</a>
@@ -34,7 +34,7 @@ export default {
       fullname: String,
       address: String,
       sched: String,
-      offerredService: String,
+      serviceOffered: String,
   },
   data() {
     return {

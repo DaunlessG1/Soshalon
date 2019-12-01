@@ -8,7 +8,7 @@
           v-bind:fullname="user.fullname"
           v-bind:address="user.address"
           v-bind:sched="user.email"
-          v-bind:offeredService="user.service1 +' '+user.service2" 
+          v-bind:serviceOffered="user.serviceOffered" 
         />
       </div>
     </div>
@@ -39,7 +39,7 @@ export default {
       for(var i in response.data.data){
         if(response.data.data[i].post == true){
           this.users.push(response.data.data[i])
-          //console.log(response.data.data[i].post)
+          //console.log(response.data.data[i].serviceOffered)
         }
         
          }

@@ -35,7 +35,7 @@ var UserSchema = new Schema({
     required: false
   },
   serviceOffered: {
-    type: String,
+    type: [String],
     required: false
   },
   description: {

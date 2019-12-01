@@ -130,25 +130,13 @@
                               <div class="container">
                                 <b>What service/s do you offer?</b>
                                 <br>
-                                <label class="checkbox-inline">
-                                  <input
-                                    id="service1"
-                                    type="checkbox"
-                                    value="NailPolish"
-                           
-                                    :placeholder="[[this.service1]]"
-                                  >Nail Polish
-                                </label>
+                                <input type="checkbox" id="service1" value="HairCut" v-model="checkedService">
+                                <label for="HairCut">Hair Cut</label>
                                 <br>
-                                <label class="checkbox-inline">
-                                  <input
-                                    id="service2"
-                                    type="checkbox"
-                                    value="Haircut"
-                             
-                                    :placeholder="[[this.service2]]"
-                                  >Hair cut
-                                </label>
+                                <input type="checkbox" id="service2" value="NailPolish" v-model="checkedService">
+                                <label for="NailPolish">Nail Polish</label>
+                                <br>
+                                <span>Service/s Offered: {{checkedService}}</span>
                               </div>
                               <div class="row">
                                 <div class="col mb-3">
@@ -233,12 +221,8 @@
                               <b>Mark check to post Profile</b>
                               <br>
                               <label class="checkbox-inline">
-                                <input
-                                  id="checkboxpost"
-                                  type="checkbox"
-                                  :value="this.ispost"
-                                  :placeholder="[[this.ispost]]"
-                                >Post Profile
+                               <input type="checkbox" id="checkbox" v-model="Postchecked">
+                               <label for="checkbox">POST PROFILE</label>
                               </label>
                             </div>
                           </div>
@@ -284,15 +268,14 @@ export default {
   name: "profile",
   data() {
     return {
-      ispost: $("#checkboxpost").val(),
+      checkedService :[],
+      Postchecked: "",
       file: "",
       fullname: "",
       email: "",
       username: "",
       fb: "",
       contactNo: "",
-      service1: $("#service1").val(),
-      service2: $("#service2").val(),
       description: "",
       password: "",
       img: "",
@@ -323,8 +306,7 @@ export default {
         this.email = response.data.data[i].email;
         this.fb = response.data.data[i].fb;
         this.contactNo = response.data.data[i].contactNo;
-        this.service1 = response.data.data[i].service1;
-        this.service2 = response.data.data[i].service2;
+        //this.checkedService = response.data.data[i].serviceOffered;
         this.description = response.data.data[i].description;
         this.img = response.data.data[i].img;
         this.address = response.data.data[i].address;
@@ -344,6 +326,7 @@ export default {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {
+     // alert(this.Postchecked)
       if (this.input.fullname == "") {
         this.input.fullname = this.fullname;
       }
@@ -362,20 +345,22 @@ export default {
       if(this.input.email == ""){
         this.input.email == this.email;
       }
+      if(this.input.username == ""){
+        this.input.username = this.username;
+      }
       if (this.input.password == "") {
-        alert(fasd)
+        alert("fasd")
         var data2 = {
           fullname: this.input.fullname,
           fb: this.input.fb,
           contactNo: this.input.contactNo,
-          service1: this.service1,
-          service2: this.service2,
           description: this.input.description,
           email: this.input.email,
           username: this.input.username,
           imagepath: this.img,
-          post: this.ispost,
-          address : this.input.address
+          post: this.Postchecked,
+          address : this.input.address,
+          service: this.checkedService
         };
         axios.post("http://localhost:3000/updateProfile", data2).then(
               response => {
@@ -401,8 +386,9 @@ export default {
           email: this.input.email,
           username: this.input.username,
           imagepath: this.img,
-          post: this.ispost,
-          address : this.input.address
+          post: this.Postchecked,
+          address : this.input.address,
+          service: this.checkedService
         };
         //alert(this.post)
         AUTH.passwordValidation(this.input.newPassword);
