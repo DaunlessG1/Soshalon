@@ -4,6 +4,7 @@
     <div class="result_part">
       <div v-for="user in users" v-bind:key="user._id">
         <serviceProviderCard
+          v-bind:img="user.img"
           v-bind:id="user._id"
           v-bind:fullname="user.fullname"
           v-bind:address="user.address"

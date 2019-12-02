@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads/')
+    cb(null, './public/uploads/') 
   },
   filename: function (req, file, callback) {
     callback(null, file.originalname);
@@ -109,9 +109,8 @@ router.post('/create', function (req, res) {
 //update user's profile
 router.post('/updateProfile', function (req, res) {
   var email = req.body.email;
-  //console.log(email)
-  var username = req.body.username.trim();
   var address = req.body.address;
+  var username = req.body.username.trim();
   var fullname = req.body.fullname;
   var fb = req.body.fb;
   var contactNo = req.body.contactNo;
@@ -122,10 +121,11 @@ router.post('/updateProfile', function (req, res) {
   var service = req.body.service;
   var schedDate = req.body.date;
   var time = req.body.time;
-  User.update({ _id :userId}, { $set: { fullname:fullname,
-  email : email,
+  User.update({ _id :userId}, { $set: {
+  email:email,
+  address:address,
+  fullname:fullname,
   username :username,
-  address: address,
   fb : fb,
   contactNo : contactNo,
   description : description,

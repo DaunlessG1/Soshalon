@@ -2,7 +2,7 @@
   <div id="header">
     <b-navbar toggleable="lg" type="dark" variant="dark">
       <b-navbar-brand @click="dashboard()">
-        <img id="logo" src="/logo.png">
+        <img id="logo" src="\logo.png">
       </b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
@@ -33,7 +33,7 @@
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item @click="viewAppointments()">VIEW APPOINTMENTS</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item href="/logout" @click="logout()">SIGN OUT</b-dropdown-item>
+            <b-dropdown-item  @click="logout()">SIGN OUT</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -97,7 +97,7 @@ export default {
       router.push({ path: "/profile" });
     },
     logout() {
-      router.push({ path: "/login" });
+      router.push({ path: "/" });
     },
     viewAppointments() {
       router.push({ path: "/appointments" });

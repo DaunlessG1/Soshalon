@@ -4,7 +4,7 @@
         <b-card no-body class="overflow-hidden" style="max-width: 540px;">
           <b-row no-gutters>
             <b-col md="6">
-              <b-card-img src="/sp1.jpg" class="rounded-0"></b-card-img>
+              <b-card-img :src="img" class="rounded-0"></b-card-img>
             </b-col>
             <b-col md="6">
               <b-card-body :title="fullname">
@@ -14,7 +14,7 @@
                  Offered Services : {{serviceOffered}}<hr>
 
                  <a href="#" class="card-link">More</a> 
-                 <a href="#" class="card-link" @click = "set()">Set Appointment</a>
+                 <a href="#" class="card-link" @click ="set()">Set Appointment</a>
                 </b-card-text>
               </b-card-body>
             </b-col>
@@ -35,6 +35,7 @@ export default {
       address: String,
       sched: String,
       serviceOffered: String,
+      img: String
   },
   data() {
     return {
@@ -99,5 +100,9 @@ body {
 }
 hr{
   color: white;
+}
+.rounded-0{
+  width: 250px;
+  height: 200px;
 }
 </style>

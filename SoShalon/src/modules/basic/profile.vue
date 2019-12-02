@@ -20,7 +20,7 @@
                             class="d-flex justify-content-center align-items-center rounded"
                             style="height: 140px; background-color: rgb(233, 236, 239);"
                           >
-                            <img src class="image" id="img">
+                            <img :src="this.img" class="image" id="img">
                           </div>
                         </div>
                       </div>
@@ -32,7 +32,6 @@
                           <div class="input-group">
                             <form @submit.prevent="onSubmit" enctype="multipart/form-data">
                               <div class="fields">
-                                
                                 <br>
                                 <input type="file" ref="file" name="file" @change="onSelect()">
                               </div>
@@ -163,6 +162,7 @@
                               <input type="time" name="timeFrom" v-model="input.timeFrom">
                               <label>To :   </label>
                               <input type="time" name="timeTo"  v-model="input.timeTo">
+                              <span>Date and Time: {{date +" "+ timeFrom +  " " + timeTo}}</span>
                             </div>
                             </div>
                           </div>
@@ -179,7 +179,7 @@
                                     <input
                                       class="form-control"
                                       type="password"
-                                      placeholder=" "
+                                      :placeholder="[[this.password]]"
                                       v-model="input.currentPassword"
                                     >
                                   </div>
@@ -266,27 +266,27 @@ export default {
   name: "profile",
   data() {
     return {
+      email:"",
+      address:"",
       service:[],
       checkedService :[],
-      Postchecked: "",
+      Postchecked: "false",
       file: "",
       fullname: "",
-      email: "",
       username: "",
       fb: "",
       contactNo: "",
       description: "",
       password: "",
       img: "",
-      address:"",
       date:"2019-00-00",
       timeFrom:"00:00:00",
       timeTo:"00:00:00",
-      input: {    
+      input: {  
+        email:"",
+        address:"",  
         fullname: "",
         username: "",
-        email: "",
-        address:"",
         fb: "",
         contactNo: "",
         description: "",
@@ -306,16 +306,17 @@ export default {
     axios.get("http://localhost:3000/profile").then(response => {
       //this.username = response.data.data.username
       for (var i in response.data.data) {
+        this.email = response.data.data[i].email;
+        this.address =response.data.data[i].address;
+        this.password = response.data.data[i].password;
         this.username = response.data.data[i].username;
         this.fullname = response.data.data[i].fullname;
-        this.email = response.data.data[i].email;
         this.fb = response.data.data[i].fb;
         this.contactNo = response.data.data[i].contactNo;
         this.service = response.data.data[i].serviceOffered;
         this.description = response.data.data[i].description;
         this.img = response.data.data[i].img;
-        this.address = response.data.data[i].address;
-        this.date = reponse.data.data[i].date;
+        //this.date = reponse.data.data[i].date;
       }
     });
   },
@@ -335,48 +336,55 @@ export default {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {
-      alert(this.input.date + this.input.timeFrom + this.input.timeTo)
-
-      if (this.input.fullname == "") {
-        this.input.fullname = this.fullname;
+      if(this.input.fullname == ""){
+        this.input.fullname = this.fullname
       }
-      if (this.input.fb == "") {
-        this.input.fb = this.fb;
+      else if(this.input.fullname == ""){
+        this.input.username = this.username
       }
-      if (this.input.contactNo == "") {
-        this.input.contactNo = this.contactNo;
+      else if(this.input.email == ""){
+        this.input.email = this.email
       }
-      if (this.input.description == "") {
-        this.input.description = this.description;
+      else if(this.input.address == ""){
+        this.input.address = this.address
       }
-      if(this.input.address == ""){
-        this.input.address == this.address;
+      else if(this.input.fb == ""){
+        this.input.fb = this.fb
       }
-      if(this.input.email == ""){
-        this.input.email == this.email;
+      else if(this.input.contactNo == ""){
+        this.input.contactNo = this.contactNo
       }
-      if(this.input.username == ""){
-        this.input.username = this.username;
+      else if(this.input.description == ""){
+        this.input.description = this.description
       }
-      if (this.input.password != "") {
+      else if(this.checkedService == ""){
+        this.checkedService = this.service
+      }
+      else if(this.input.date == ""){
+        this.input.date = this.date
+      }
+      else if(this.input.timeFrom == "" && this.input.timeTo == ""){
+        this.input.timeFrom = this.timeFrom
+        this.input.timeTo = this.timeTo
+      }
+      else if (this.input.password != "") {
         var data = {
+          email: this.input.email,
+          address: this.input.address,
           fullname: this.input.fullname,
           fb: this.input.fb,
           contactNo: this.input.contactNo,
           description: this.input.description,
           Password: this.input.newPassword,
-          email: this.input.email,
           username: this.input.username,
           imagepath: this.img,
           post: this.Postchecked,
-          address : this.input.address,
           service: this.checkedService,
           date:this.input.date,
           time : this.input.timeFrom +" "+ this.input.timeTo
         };
         axios.post("http://localhost:3000/updateProfile", data).then(
               response => {
-                //alert(this.email)
                 if (response.data.message == "ok") {
                   console.log("ok");
                   this.alertSuccess();
@@ -387,17 +395,18 @@ export default {
               }
         );
       }
-       else {
+       else if(this.input.password != ""){
+         alert("ok keeyu")
         var data2 = {
+          email: this.input.email,
+          address: this.input.address,
           fullname: this.input.fullname,
           fb: this.input.fb,
           contactNo: this.input.contactNo,
           description: this.input.description,
-          email: this.input.email,
           username: this.input.username,
           imagepath: this.img,
           post: this.Postchecked,
-          address : this.input.address,
           service: this.checkedService,
           date:this.input.date,
           time : this.input.timeFrom +" "+ this.input.timeTo
@@ -439,14 +448,18 @@ export default {
       $("#img").attr("src", img);
     },
     async onSubmit() {
+      
+      
       const formData = new FormData();
       formData.append("file", this.file);
       try {
         await axios
           .post("http://localhost:3000/api/file", formData)
           .then(response => {
-            //this.img = response.data.file.path;
-            console.log(response.file.path)
+            var str = response.data.path
+            str = str.replace(/\\/g,"/")
+            var requiredString = str.substring(str.indexOf('/'),str.length).trim();
+            this.img = requiredString;
           
           });
         err => {
@@ -454,7 +467,7 @@ export default {
         };
       } catch (err) {
         console.log(err);
-        this.message = err.response.data.error;
+        //this.message = err.response.error;
       }
     }
   }
