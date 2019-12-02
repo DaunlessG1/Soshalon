@@ -45,7 +45,7 @@
                     </div>
                     <div class="tab-content pt-3">
                       <div class="tab-pane active">
-                        <form class="form" onsubmit="event.preventDefault();">
+                        <form class="form" >
                           <div class="row">
                             <div class="col">
                               <div class="row">
@@ -135,7 +135,7 @@
                                 <br>
                                 <input type="checkbox" id="service2" value="NailPolish" v-model="checkedService">
                                 <label for="NailPolish">Nail Polish</label><br>
-                                <span>Service/s Offered: {{service}}</span>
+                                <span>Service/s Offered: {{checkedService}}</span>
                               </div>
                               <div class="row">
                                 <div class="col mb-3">
@@ -162,7 +162,8 @@
                               <input type="time" name="timeFrom" v-model="input.timeFrom">
                               <label>To :   </label>
                               <input type="time" name="timeTo"  v-model="input.timeTo">
-                              <span>Date and Time: {{date +" "+ timeFrom +  " " + timeTo}}</span>
+                              <br>
+                              <span>Date: {{date +"--- "+ time}}</span>
                             </div>
                             </div>
                           </div>
@@ -219,7 +220,8 @@
                               <label class="checkbox-inline">
                                <input type="checkbox" id="checkbox" v-model="Postchecked">
                                <label for="checkbox">POST PROFILE</label>
-                              </label>
+                              </label><br>
+                              <span>Status :{{status}}</span>
                             </div>
                           </div>
                           <div class="row">
@@ -266,6 +268,8 @@ export default {
   name: "profile",
   data() {
     return {
+      time: "",
+      status: "", 
       email:"",
       address:"",
       service:[],
@@ -279,7 +283,7 @@ export default {
       description: "",
       password: "",
       img: "",
-      date:"2019-00-00",
+      date:"2019-01-01",
       timeFrom:"00:00:00",
       timeTo:"00:00:00",
       input: {  
@@ -316,6 +320,15 @@ export default {
         this.service = response.data.data[i].serviceOffered;
         this.description = response.data.data[i].description;
         this.img = response.data.data[i].img;
+        this.date = response.data.data[i].date;
+        this.time = response.data.data[i].time;
+        if(response.data.data[i].post){
+          this.status = "Posted!"
+        }
+        else{
+          this.status = "Not posted yet try again!"
+        }
+        
         //this.date = reponse.data.data[i].date;
       }
     });
@@ -339,7 +352,7 @@ export default {
       if(this.input.fullname == ""){
         this.input.fullname = this.fullname
       }
-      else if(this.input.fullname == ""){
+      else if(this.input.username == ""){
         this.input.username = this.username
       }
       else if(this.input.email == ""){
@@ -357,13 +370,13 @@ export default {
       else if(this.input.description == ""){
         this.input.description = this.description
       }
-      else if(this.checkedService == ""){
+      else if(this.checkedService == null){
         this.checkedService = this.service
       }
       else if(this.input.date == ""){
         this.input.date = this.date
       }
-      else if(this.input.timeFrom == "" && this.input.timeTo == ""){
+      else if(this.time = ""){
         this.input.timeFrom = this.timeFrom
         this.input.timeTo = this.timeTo
       }
@@ -396,7 +409,6 @@ export default {
         );
       }
        else if(this.input.password != ""){
-         alert("ok keeyu")
         var data2 = {
           email: this.input.email,
           address: this.input.address,
