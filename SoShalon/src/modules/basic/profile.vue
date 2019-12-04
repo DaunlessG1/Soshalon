@@ -130,7 +130,7 @@
                                 <br>
                                 <input type="checkbox" id="service2" value="NailPolish" v-model="checkedService">
                                 <label for="NailPolish">Nail Polish</label><br>
-                                <span>Service/s Offered: {{checkedService}}</span>
+                                <span>Service/s Offered: {{service}}</span>
                               </div>
                               <div class="row">
                                 <div class="col mb-3">
@@ -323,8 +323,6 @@ export default {
         else{
           this.status = "Not posted yet try again!"
         }
-        
-        //this.date = reponse.data.data[i].date;
       }
     });
   },
@@ -341,6 +339,7 @@ export default {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {   
+      alert(this.checkedService)
       if (this.input.password != "") {
         var data = {
           email: this.input.email,
@@ -372,12 +371,9 @@ export default {
     onSelect() {
       //const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
       const file = this.$refs.file.files[0];
-      this.file = file;
-      
+      this.file = file;  
       var img = URL.createObjectURL(file);
-      //this.file = img;
       $("#img").attr("src", img);
-    
       const formData = new FormData();
       formData.append("file", this.file);
          axios

@@ -23,16 +23,16 @@
                             style="height: 140px; background-color: rgb(233, 236, 239);"
                           >
                             <!-- <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;" class="image" src="">140x140</span> -->
-                            <image :src="this.image" class="image"/>
+                            <img  class="image" :src="this.img">
                           </div>
                         </div>
                       </div>
                       <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                         <div class="text-center text-sm-left mb-2 mb-sm-0">
                           <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{this.fullname}}</h4>
-                          <p class="mb-0">{{this.username}}</p>
-                          <p class="mb-0">{{this.address}}</p>
-                          <p class="mb-0">{{this.service}}</p>
+                          <p class="mb-0">@{{this.username}}</p>
+                          <p class="mb-0">Address :{{this.address}}</p>
+                          <p class="mb-0">Service Offered :{{this.service}}</p>
                         </div>
                       </div>
                     </div>
@@ -60,6 +60,17 @@
                                 <div class="col">
                                   <label id="appointment">PERSONAL DETAILS</label>
                                   <div class="form-group">
+                                    <label id="service">Fullname:</label>
+                                    <input
+                                      class="form-control"
+                                      type="text"
+                                      name="fullname"
+                                      placeholder="Enter name"
+                                      value
+                                      v-model="input.fullname"
+                                    />
+                                  </div>
+                                  <div class="form-group">
                                     <label id="service">Home Address:</label>
                                     <input
                                       class="form-control"
@@ -67,7 +78,7 @@
                                       name="username"
                                       placeholder="Enter home address"
                                       value
-                                      v-model="input.username"
+                                      v-model="input.address"
                                     />
                                   </div>
                                 </div>
@@ -95,8 +106,21 @@
                                       v-model="input.contactNo"
                                     />
                                   </div>
+                                  
+                                  <div class="form-group">
+                                    <label id="service">Messenger:</label>
+                                    <input
+                                      class="form-control"
+                                      type="messenger"
+                                      placeholder="Add messenger here..."
+                                      v-model="input.messenger"
+                                    />
+                                 
                                 </div>
+                                </div>
+                                
                               </div>
+                              
                               <div class="row">
                                 <div class="container">
                                   <b id="service">Time</b>
@@ -109,17 +133,7 @@
                                     <input type="checkbox" value=" " v-model="input.service2" />1:00-2:00
                                   </label>
                                 </div>
-                                <div class="col col-sm-6 mb-3">
-                                  <div class="form-group">
-                                    <label id="service">Messenger:</label>
-                                    <input
-                                      class="form-control"
-                                      type="messenger"
-                                      placeholder="Add messenger here..."
-                                      v-model="input.messenger"
-                                    />
-                                  </div>
-                                </div>
+                                
                               </div>
                               <div class="row">
                                 <div class="col mb-3">
@@ -142,16 +156,12 @@
                                     <button v-on:click="alertDisplay1()" class="btn btn-danger">CANCEL</button>
                                     <br />
                                     <br />
-                                    <button v-on:click="alertDisplay()" class="btn btn-info">SUBMIT</button>
+                                    <button v-on:click="submitAppointment()" class="btn btn-info">SUBMIT</button>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-
-                          <!-- <div class="row"> -->
-
-                          <!-- </div> -->
                         </form>
                       </div>
                     </div>
@@ -187,21 +197,24 @@ export default {
     Header2
   },
   name: "profile",
+
   mounted(){
+      
      axios.get("http://localhost:3000/setAppointment").then(response => {
       for (var i in response.data.data) {
         this.fullname =response.data.data[i].fullname;
-        this.image = response.data.data[i].img;
+        this.img = response.data.data[i].img;
         this.username = response.data.data[i].username;
         this.address = response.data.data[i].address;
         this.service =response.data.data[i].serviceOffered;
       }
+      console.log(this.image)
     });
   },
-  data() {
+    data() {
     return {
       fullname: "",
-      image:"",
+      img:"",
       username:"",
       address:"",
       service:"",
@@ -220,6 +233,7 @@ export default {
   },
   methods: {
     alertDisplay() {
+      //alert(this.image)
       // $swal function calls SweetAlert into the application with the specified configuration.
       // this.$swal('SUBMITTED', 'Your Appointment is Submmitted!', 'OK');
       this.$swal({
@@ -250,7 +264,33 @@ export default {
         }
       });
     }
-  }
+  },
+   submitAppointment() {
+      var data = {
+        name: this.input.fullname,
+        address: this.input.address,
+        selectedItem: this.selectedItem,
+        address: this.address,
+        date : this.input.date,
+      };
+      axios
+        .post("http://localhost:3000/addAppointment", data)
+        .then(response => {
+          alert("humana")
+          if (response.data.message == "oks") {
+            console.log("ok");
+            this.alertDisplay();
+          }
+          if (response.data.message == "Wrong email or password.") {
+            alert(response.data.message);
+          }
+          err => {
+            console.log(err);
+            // alert(message)
+          };
+        });
+    }
+  
 };
 </script>
 <style scoped>
@@ -287,5 +327,9 @@ p {
 #service {
   color: #00bcd4;
   font-weight: bold;
+}
+.image{
+  width:150px;
+  height:150px;
 }
 </style>

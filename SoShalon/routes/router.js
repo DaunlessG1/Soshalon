@@ -135,7 +135,6 @@ router.post('/updateProfile', function (req, res) {
   var schedDate = req.body.date;
   var time = req.body.time;
   User.update({ _id :userId}, { $set: {
-
   email:email,
   address:address,
   fullname:fullname,
@@ -146,7 +145,7 @@ router.post('/updateProfile', function (req, res) {
   Password : Password,
   img : image,
   post : post,
-  service : service,
+  serviceOffered : service,
   date: schedDate,
   time:time
  } }, function (err, result) {
