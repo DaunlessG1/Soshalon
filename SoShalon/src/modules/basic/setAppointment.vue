@@ -23,17 +23,14 @@
                             style="height: 140px; background-color: rgb(233, 236, 239);"
                           >
                             <!-- <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;" class="image" src="">140x140</span> -->
-                            <img
-                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_h1-ndFdLmk7IIzAoADDo1GqzkdAXqI48XTKKuDyhBe5ZEH-R&s"
-                              class="image"
-                            />
+                            <image :src="this.image" class="image"/>
                           </div>
                         </div>
                       </div>
                       <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                         <div class="text-center text-sm-left mb-2 mb-sm-0">
                           <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{this.fullname}}</h4>
-                          <p class="mb-0">@Kath</p>
+                          <p class="mb-0">{{this.username}}</p>
                           <p class="mb-0">{{this.address}}</p>
                           <p class="mb-0">{{this.service}}</p>
                         </div>
@@ -50,7 +47,7 @@
                                   <div>
                                     <label id="service">Service:</label>
                                     <b-col sm="8">
-                                      <b-form-select v-model="selectedItem">
+                                      <b-form-select>
                                         <option value="Nail Polish">Nail Polish</option>
                                         <option value="Haircut">Haircut</option>
                                       </b-form-select>
@@ -190,9 +187,24 @@ export default {
     Header2
   },
   name: "profile",
+  mounted(){
+     axios.get("http://localhost:3000/setAppointment").then(response => {
+      for (var i in response.data.data) {
+        this.fullname =response.data.data[i].fullname;
+        this.image = response.data.data[i].img;
+        this.username = response.data.data[i].username;
+        this.address = response.data.data[i].address;
+        this.service =response.data.data[i].serviceOffered;
+      }
+    });
+  },
   data() {
     return {
-      fullname: "sample",
+      fullname: "",
+      image:"",
+      username:"",
+      address:"",
+      service:"",
       input: {
         fullname: "",
         username: "",
@@ -259,15 +271,7 @@ body {
   left: 1449px;
   top: 25px;
 }
-#profile {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  left: 1517px;
-  top: 27px;
-  border: 2px solid #ffff;
-  border-radius: 50px;
-}
+
 h4 {
   color: #00bcd4;
 }

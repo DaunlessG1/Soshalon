@@ -26,7 +26,8 @@
 
 <script>
 //import AUTH from "services/auth";
-import router from "router"
+import router from "router";
+import axios from "axios";
 export default {
   name: "dashboard",
   props: {
@@ -34,7 +35,7 @@ export default {
       fullname: String,
       address: String,
       sched: String,
-      serviceOffered: String,
+      serviceOffered: Array,
       img: String
   },
   data() {
@@ -43,8 +44,9 @@ export default {
     };
   },
   methods :{
-      set(){
-          router.push({path : "/setAppointment"})
+    set(){
+      axios.post("http://localhost:3000/card/"+this.id)
+      router.push({path : "/setAppointment"})  
       }
   }
 };

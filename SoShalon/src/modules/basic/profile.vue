@@ -18,8 +18,7 @@
                         <div class="mx-auto" style="width: 140px;">
                           <div
                             class="d-flex justify-content-center align-items-center rounded"
-                            style="height: 140px; background-color: rgb(233, 236, 239);"
-                          >
+                            style="height: 140px; background-color: rgb(233, 236, 239);">
                             <img :src="this.img" class="image" id="img">
                           </div>
                         </div>
@@ -30,14 +29,12 @@
                           <p class="mb-0">{{this.username}}</p>
                           <p class="mb-0">{{this.email}}</p>
                           <div class="input-group">
-                            <form @submit.prevent="onSubmit" enctype="multipart/form-data">
+                            <form  enctype="multipart/form-data">
                               <div class="fields">
                                 <br>
-                                <input type="file" ref="file" name="file" @change="onSelect()">
+                                <input type="file" ref="file" name="file" @change="onSelect()" accept="images/*">
                               </div>
-                              <div class="fields">
-                                <button class ="btn btn-primary">Submit</button>
-                              </div>
+                             
                             </form>
                           </div>
                         </div>
@@ -69,8 +66,7 @@
                                       type="text"
                                       name="username"
                                       v-model="input.username"
-                                      :placeholder="[[ this.username ]]"
-                                    >
+                                      :placeholder="[[ this.username ]]">
                                   </div>
                                 </div>
                               </div>
@@ -83,8 +79,7 @@
                                       type="text"
                                       name="email"
                                       v-model="input.email"
-                                      :placeholder="[[ this.email ]]"
-                                    >
+                                      :placeholder="[[ this.email ]]">
                                   </div>
                                 </div>
                               </div>
@@ -227,7 +222,7 @@
                           <div class="row">
                             <div class="col d-flex justify-content-end">
                               <button
-                                type="submit"
+                                
                                 class="btn btn-primary"
                                 v-on:click="updateProfile()"
                               >Save Changes</button>
@@ -335,9 +330,6 @@ export default {
   },
 
   methods: {
-    // showdate(){
-    //  datepicker
-    // },
     alertSuccess() {
       this.$swal({
         type: "success",
@@ -348,39 +340,8 @@ export default {
     cancel() {
       router.push({ path: "/dashboard" });
     },
-    updateProfile() {
-      if(this.input.fullname == ""){
-        this.input.fullname = this.fullname
-      }
-      else if(this.input.username == ""){
-        this.input.username = this.username
-      }
-      else if(this.input.email == ""){
-        this.input.email = this.email
-      }
-      else if(this.input.address == ""){
-        this.input.address = this.address
-      }
-      else if(this.input.fb == ""){
-        this.input.fb = this.fb
-      }
-      else if(this.input.contactNo == ""){
-        this.input.contactNo = this.contactNo
-      }
-      else if(this.input.description == ""){
-        this.input.description = this.description
-      }
-      else if(this.checkedService == null){
-        this.checkedService = this.service
-      }
-      else if(this.input.date == ""){
-        this.input.date = this.date
-      }
-      else if(this.time = ""){
-        this.input.timeFrom = this.timeFrom
-        this.input.timeTo = this.timeTo
-      }
-      else if (this.input.password != "") {
+    updateProfile() {   
+      if (this.input.password != "") {
         var data = {
           email: this.input.email,
           address: this.input.address,
@@ -396,6 +357,7 @@ export default {
           date:this.input.date,
           time : this.input.timeFrom +" "+ this.input.timeTo
         };
+      }
         axios.post("http://localhost:3000/updateProfile", data).then(
               response => {
                 if (response.data.message == "ok") {
@@ -405,67 +367,20 @@ export default {
               },
               err => {
                 console.log(err);
-              }
-        );
-      }
-       else if(this.input.password != ""){
-        var data2 = {
-          email: this.input.email,
-          address: this.input.address,
-          fullname: this.input.fullname,
-          fb: this.input.fb,
-          contactNo: this.input.contactNo,
-          description: this.input.description,
-          username: this.input.username,
-          imagepath: this.img,
-          post: this.Postchecked,
-          service: this.checkedService,
-          date:this.input.date,
-          time : this.input.timeFrom +" "+ this.input.timeTo
-        };
-        //alert(this.post)
-        AUTH.passwordValidation(this.input.newPassword);
-        if (AUTH.passwordValid == 1) {
-          if (this.input.newPassword == this.input.ConfirmPassword) {
-            axios.post("http://localhost:3000/updateProfile", data2).then(
-              response => {
-                if (response.data.message == "ok") {
-                  console.log("ok");
-                  this.alertSuccess();
-                  //router.push({ path: "/login" });
-                }
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          } else {
-            alert("Password did not match");
-          }
-        }
-      }
+              });
     },
     onSelect() {
-      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      //const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
       const file = this.$refs.file.files[0];
       this.file = file;
-      if (!allowedTypes.includes(file.type)) {
-        this.message = "Filetype is wrong!!";
-      }
-      if (file.size > 500000) {
-        this.message = "Too large, max size allowed is 500kb";
-      }
+      
       var img = URL.createObjectURL(file);
       //this.file = img;
       $("#img").attr("src", img);
-    },
-    async onSubmit() {
-      
-      
+    
       const formData = new FormData();
       formData.append("file", this.file);
-      try {
-        await axios
+         axios
           .post("http://localhost:3000/api/file", formData)
           .then(response => {
             var str = response.data.path
@@ -477,11 +392,8 @@ export default {
         err => {
           console.log(err);
         };
-      } catch (err) {
-        console.log(err);
-        //this.message = err.response.error;
-      }
     }
+    
   }
 };
 </script>

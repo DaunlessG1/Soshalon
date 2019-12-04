@@ -46,7 +46,20 @@ router.get('/search', function(req,res){
   })
 })
 
+var serviceProvider;
+router.post('/card/:id', function (req, res) {
+  User.find({ _id:req.params.id }, (err, user) => {
+    if (err) {
+      res.send(err);
+    }
+    serviceProvider = user;
+  });
+})
 
+//fetch data of service provider in set appointment
+router.get('/setAppointment', function (req, res) {
+  res.send({data: serviceProvider});
+})
 
 //fetch current User
 router.get('/profile', function (req, res) {
@@ -122,6 +135,7 @@ router.post('/updateProfile', function (req, res) {
   var schedDate = req.body.date;
   var time = req.body.time;
   User.update({ _id :userId}, { $set: {
+
   email:email,
   address:address,
   fullname:fullname,
