@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AppointmentSchema = new Schema({
-    name: {
+    fullname: {
         type: String,
         required: true
     },
@@ -10,31 +10,39 @@ var AppointmentSchema = new Schema({
         type: String, 
         required: true
     },
-    date: {
-        type: Date, 
-        required: false
-    }, 
-    time: {
-        type: String, 
-        required: false
-    }, 
     messenger: {
         type: String,
-        required: false,
-        unique: true
+        required: true
+    },
+    contactNo: {
+        type: String,
+        required: true
     },
     description: {
         type: String, 
         required: false
     },
     service: {
-        type: String,
-        required: false
+        type: Array,
+        required: true
     },
-    phone_no: {
+    date: {
+        type: Date, 
+        required: true
+    }, 
+    time: {
+        type: String, 
+        required: true
+    },
+    SPfullname :{
         type: String,
-        required: false
+        required: true
+    },
+    ServiceProviderId:{
+        type: String,
+        required: true
     }
+    
 });
 
 var Appointment = mongoose.model('Appointment', AppointmentSchema);

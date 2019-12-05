@@ -222,7 +222,6 @@
                           <div class="row">
                             <div class="col d-flex justify-content-end">
                               <button
-                                
                                 class="btn btn-primary"
                                 v-on:click="updateProfile()"
                               >Save Changes</button>

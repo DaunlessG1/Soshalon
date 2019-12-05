@@ -3,8 +3,7 @@
   <Header2></Header2>
     <link
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-      rel="stylesheet"
-    />
+      rel="stylesheet"/>
     <br />
     <br />
     <div class="container">
@@ -32,13 +31,14 @@
                           <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{this.fullname}}</h4>
                           <p class="mb-0">@{{this.username}}</p>
                           <p class="mb-0">Address :{{this.address}}</p>
-                          <p class="mb-0">Service Offered :{{this.service}}</p>
+                          <p class="mb-0">service:{{this.service}}</p>
+                          
                         </div>
                       </div>
                     </div>
                     <div class="tab-content pt-3">
                       <div class="tab-pane active">
-                        <form class="form" novalidate>
+                        <form class="form">
                           <div class="row">
                             <div class="col">
                               <div class="row">
@@ -46,17 +46,43 @@
                                   <label id="appointment">APPOINTMENT DETAILS</label>
                                   <div>
                                     <label id="service">Service:</label>
+                                    <div id="app">
+                                      <select v-model="selected">
+                                          <option v-for="service in services" v-bind:value="{ service: service.servicename}">{{ service.servicename }}
+                                          </option>
+                                      </select>
+                                      <br>
+                                      <span>Selected Service:
+                                      {{selected.service}}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <label id="service">Date:</label>
                                     <b-col sm="8">
-                                      <b-form-select>
-                                        <option value="Nail Polish">Nail Polish</option>
-                                        <option value="Haircut">Haircut</option>
-                                      </b-form-select>
-                                      <!-- <div>
-                                        <strong>{{ selectedItem }}</strong>
-                                      </div>-->
+                                      <b>{{this.date}}</b>
                                     </b-col>
                                   </div>
+                                  <div>
+                                    <label id="service">Time:</label>
+                                    <b-col sm="8">
+                                      <b>{{this.time}}</b>
+                                    </b-col>
+                                  </div>
+                                  <div class="row">
+                                <div class="col mb-3">
+                                  <div class="form-group">
+                                    <label id="service">Description:</label>
+                                    <textarea
+                                      v-model="input.description2"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Add description bere..."
+                                    ></textarea>
+                                  </div>
                                 </div>
+                                </div>
+                     
                                 <div class="col">
                                   <label id="appointment">PERSONAL DETAILS</label>
                                   <div class="form-group">
@@ -67,7 +93,7 @@
                                       name="fullname"
                                       placeholder="Enter name"
                                       value
-                                      v-model="input.fullname"
+                                      v-model="input.fullname2"
                                     />
                                   </div>
                                   <div class="form-group">
@@ -78,22 +104,14 @@
                                       name="username"
                                       placeholder="Enter home address"
                                       value
-                                      v-model="input.address"
+                                      v-model="input.address2"
                                     />
                                   </div>
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="col">
-                                  <div class="form-group">
-                                    <label id="service">Date:</label>
-                                    <input
-                                      class="form-control"
-                                      type="date"
-                                      placeholder
-                                      v-model="input.date"
-                                    />
-                                  </div>
+                                 
                                 </div>
                                 <div class="col">
                                   <label id="appointment">CONTACT DETAILS</label>
@@ -103,7 +121,7 @@
                                       class="form-control"
                                       type="phone"
                                       placeholder="Enter phone number"
-                                      v-model="input.contactNo"
+                                      v-model="input.contactNo2"
                                     />
                                   </div>
                                   
@@ -113,50 +131,17 @@
                                       class="form-control"
                                       type="messenger"
                                       placeholder="Add messenger here..."
-                                      v-model="input.messenger"
+                                      v-model="input.messenger2"
                                     />
-                                 
                                 </div>
                                 </div>
-                                
                               </div>
-                              
-                              <div class="row">
-                                <div class="container">
-                                  <b id="service">Time</b>
-                                  <br />
-                                  <label class="checkbox-inline">
-                                    <input type="checkbox" value=" " v-model="input.service1" />9:00-10:00
-                                  </label>
-                                  <br />
-                                  <label class="checkbox-inline">
-                                    <input type="checkbox" value=" " v-model="input.service2" />1:00-2:00
-                                  </label>
-                                </div>
-                                
-                              </div>
-                              <div class="row">
-                                <div class="col mb-3">
-                                  <div class="form-group">
-                                    <label id="service">Description:</label>
-                                    <textarea
-                                      v-model="input.description"
-                                      class="form-control"
-                                      rows="5"
-                                      placeholder="Add description bere..."
-                                    ></textarea>
-                                  </div>
-                                </div>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
                                 <div class="col mb-3">
                                   <div class="col d-flex justify-content-end">
                                     <button v-on:click="alertDisplay1()" class="btn btn-danger">CANCEL</button>
-                                    <br />
-                                    <br />
-                                    <button v-on:click="submitAppointment()" class="btn btn-info">SUBMIT</button>
+                                    <br>
+                                    <br>
+                                    <button  @click="submit()" class="btn btn-info">SUBMIT</button>
                                   </div>
                                 </div>
                               </div>
@@ -179,27 +164,18 @@
 </template>
 <script>
 import $ from "jquery";
-$(function() {
-  $("#inputFile").change(function(e) {
-    var img = URL.createObjectURL(e.target.files[0]);
-    $(".image").attr("src", img);
-  });
-});
 import Header2 from "components/frame/Header2.vue";
 import AUTH from "services/auth";
 import { constants } from "fs";
 import axios from "axios";
 import router from "router";
-import { type } from "os";
-sessionStorage.setItem("token", false);
 export default {
   components:{
     Header2
   },
   name: "profile",
 
-  mounted(){
-      
+  mounted(){  
      axios.get("http://localhost:3000/setAppointment").then(response => {
       for (var i in response.data.data) {
         this.fullname =response.data.data[i].fullname;
@@ -207,35 +183,46 @@ export default {
         this.username = response.data.data[i].username;
         this.address = response.data.data[i].address;
         this.service =response.data.data[i].serviceOffered;
+        this.date = response.data.data[i].date;
+        this.time = response.data.data[i].time;
+        this.ServiceProviderId = response.data.data[i]._id;
       }
       console.log(this.image)
     });
   },
     data() {
     return {
+      selected: '',
+        services: [
+        {servicename: 'HairCut'},
+        {servicename: 'NailPolish'}
+      ],
+      ServiceProviderId :"",
+      date: "",
+      time: "",
       fullname: "",
       img:"",
       username:"",
       address:"",
       service:"",
       input: {
-        fullname: "",
-        username: "",
-        date: "",
-        time: "",
-        messenger: "",
-        text: "",
-        phone: "",
-        description: "",
-        selectedItem: ""
+        fullname2: "",
+        address2: "",
+        messenger2: "",
+        contactNo2: "",
+        description2: "",
       }
     };
   },
   methods: {
+    error() {
+      this.$swal({
+        type: "warning",
+        title: "Error",
+        text: "All fields must be filled!"
+      });
+    },
     alertDisplay() {
-      //alert(this.image)
-      // $swal function calls SweetAlert into the application with the specified configuration.
-      // this.$swal('SUBMITTED', 'Your Appointment is Submmitted!', 'OK');
       this.$swal({
         type: "success",
         title: "SUCCESS!",
@@ -263,35 +250,41 @@ export default {
           this.$swal("Cancelled", "Your file is still intact", "info");
         }
       });
-    }
-  },
-   submitAppointment() {
+    },
+    submit() {
+     //alert("fdasf")
       var data = {
-        name: this.input.fullname,
-        address: this.input.address,
-        selectedItem: this.selectedItem,
-        address: this.address,
-        date : this.input.date,
+        ServiceProviderId: this.ServiceProviderId,
+        fullname: this.input.fullname2,
+        address: this.input.address2,
+        messenger:this.input.messenger2,
+        contactNo:this.input.contactNo2,
+        description: this.input.description2,
+        service: this.selected,
+        date : this.date,
+        time : this.time,
+        SPfullname: this.fullname,
+        SPusername: this.username
       };
-      axios
-        .post("http://localhost:3000/addAppointment", data)
+      axios.post("http://localhost:3000/addAppointment", data)
         .then(response => {
-          alert("humana")
-          if (response.data.message == "oks") {
-            console.log("ok");
+          if (response.data.message == "ok") {
             this.alertDisplay();
           }
-          if (response.data.message == "Wrong email or password.") {
-            alert(response.data.message);
+          else if(response.data.message == 'err'){
+            this.error();
           }
           err => {
-            console.log(err);
-            // alert(message)
+            console.log(err); 
           };
         });
     }
+
+  },
+   
   
 };
+// font-family: "Times New Roman", Times, serif;
 </script>
 <style scoped>
 body {
@@ -321,15 +314,17 @@ p {
 #appointment {
   color: #ff3377;
   font-weight: bold;
-  font-family: "Times New Roman", Times, serif;
+ 
   text-align: center;
 }
 #service {
   color: #00bcd4;
   font-weight: bold;
 }
-.image{
-  width:150px;
-  height:150px;
+.image[data-v-30867a82] {
+    width: auto;
+    height: 150px;
+    max-width: 150px;
+    max-height: 150px;
 }
 </style>

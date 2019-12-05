@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../model/user');
+var Appointment = require('../model/Appointment');
 var userId;
 const multer = require("multer");
-const fs = require('fs');
+//const fs = require('fs');
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
@@ -34,6 +35,19 @@ router.post('/api/file',function(req,res){
 });
 
 
+//add appointment
+router.post('/addAppointment', function (req, res) {
+  let appointment = new Appointment(req.body)
+  appointment.save()
+    .then(() => {
+      res.status(200).json({ message: 'ok' })
+      console.log('ok')
+    })
+    .catch(err => {
+      res.status(200).json({ message: 'err' })
+      console.log({message: err.message})
+    })
+})
 
 
 // fetch users that matches in search tab
@@ -192,3 +206,4 @@ router.get('/logout', function (req, res, next) {
 });
 
 module.exports = router;
+

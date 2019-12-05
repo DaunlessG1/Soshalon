@@ -104,7 +104,10 @@ hr{
   color: white;
 }
 .rounded-0{
-  width: 250px;
   height: 200px;
+  width: auto;
+  max-width: 250px;
+  max-height: 250px
+  
 }
 </style>
