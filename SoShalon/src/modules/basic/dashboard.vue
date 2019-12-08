@@ -9,7 +9,7 @@
           v-bind:fullname="user.fullname"
           v-bind:address="user.address"
           v-bind:sched="user.date + ' - ' + user.time"
-          v-bind:serviceOffered="user.serviceOffered" 
+          v-bind:serviceOffered="user.serviceOffered"
         />
       </div>
     </div>
@@ -17,34 +17,44 @@
 </template>
 
 <script>
+
 import serviceProviderCard from "components/card/card.vue";
 import Header2 from "components/frame/Header2.vue";
 import AUTH from "services/auth";
 import { METHODS } from "http";
 import { format } from "path";
-import router from 'router';
-import axios from 'axios';
+import router from "router";
+import axios from "axios";
 export default {
   components: {
     Header2,
     serviceProviderCard
   },
-  
+
   data() {
     return {
-      users:[]
+      users: []
     };
   },
   mounted() {
+ 
     axios.get("http://localhost:3000/dashboard").then(response => {
-      for(var i in response.data.data){
-        if(response.data.data[i].post == true){
-          this.users.push(response.data.data[i])
+      for (var i in response.data.data) {
+        if(response.data.data[i].post == true) {
+          this.users.push(response.data.data[i]);
           //console.log(response.data.data[i].serviceOffered)
         }
-        
-         }
+      }
     });
+  },
+  computed: {
+    // filteredList() {
+    //   var s = search;
+    //   alert(s)
+    //   return this.users.filter(user => {
+    //     return user.address.toLowerCase().includes(s.toLowerCase())
+    //   })
+    // }
   },
   methods: {
     format(value, event) {
@@ -52,6 +62,7 @@ export default {
     }
   }
 };
+   
 </script>
 <style>
 body {
@@ -69,5 +80,4 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
 </style>

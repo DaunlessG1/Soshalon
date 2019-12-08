@@ -41,7 +41,11 @@ var AppointmentSchema = new Schema({
     ServiceProviderId:{
         type: String,
         required: true
-    }
+    },
+    // status:{
+    //     type: Boolean,
+    //     required : true
+    // }
     
 });
 

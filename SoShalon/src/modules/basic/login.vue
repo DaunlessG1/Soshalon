@@ -50,12 +50,11 @@ export default {
         username: this.input.username,
         password: this.input.password
       };
-
       axios.post("http://localhost:3000/auth", data).then(
         response => {
           if (response.data.message == "ok") {
             console.log("ok")
-            //AUTH.storeData(response.data.fullname, response.data.username, response.data.email, response.data.fb, response.data.contactNo, response.data.service1, response.data.service2, response.data.description, response.data.currentPassword)
+            //AUTH.storeData(response.data.fullname, response.data.username, response.data.email, response.data.fb, response.data.contactNo, response.data.service1, response.data.service2, response.data.description, response.data.currentPassword)
             //console.log(response);
             router.push({ path: "/dashboard" });
           }
@@ -134,7 +133,6 @@ body {
     background: none;
     padding: 0 5px;
     height: 40px;
-
 }
 .login-btn {
     display: block;
@@ -160,7 +158,6 @@ body {
     text-align: center;
     font-size: 13px;
 }
-
     /*--For Small Devices CSS--*/
     @media (max-width: 575px){
     #login-form {

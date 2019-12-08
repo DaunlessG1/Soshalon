@@ -4,37 +4,57 @@ var User = require('../model/user');
 var Appointment = require('../model/Appointment');
 var userId;
 const multer = require("multer");
-//const fs = require('fs');
-
 // GET route for reading data
 router.get('/', function (req, res, next) {
   return res.sendFile(path.join(__dirname + 'modules/basic/login.vue'));
 });
-
-
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/uploads/') 
+    cb(null, './public/uploads/')
   },
   filename: function (req, file, callback) {
     callback(null, file.originalname);
   }
 });
-
-router.post('/api/file',function(req,res){
-    var upload = multer({ storage : storage}).single('file');
-    upload(req,res,function(err) {
-        if(err) {
-          console.log(err)
-            return res.end("Error uploading file.");
-        }
-        console.log(req.file)
-        res.send(req.file)
-        //res.end("File is uploaded");
-    });
+router.post('/api/file', function (req, res) {
+  var upload = multer({ storage: storage }).single('file');
+  upload(req, res, function (err) {
+    if (err) {
+      console.log(err)
+      return res.end("Error uploading file.");
+    }
+    console.log(req.file)
+    res.send(req.file)
+    //res.end("File is uploaded");
+  });
 });
-
-
+var data = {
+  address: "",
+  service: ""
+}
+//get search
+router.post('/search', (req, res) => {
+  data.address = req.body.address;
+  data.service = req.body.service;
+  data.address = data.address.toLocaleLowerCase()
+  data.service = data.service.toLocaleLowerCase()
+  console.log(data.address)
+  console.log(data.service)
+  //res.send(data)
+})
+//send search
+router.get('/getsearch', (req, res) => {
+  res.send(data)
+})
+//fetch all appointments
+router.get('/appointments', function (req, res) {
+  Appointment.find({ ServiceProviderId: userId }, (err, appointments) => {
+    if (err) {
+      res.send(err)
+    }
+    res.json({ data: appointments })
+  })
+})
 //add appointment
 router.post('/addAppointment', function (req, res) {
   let appointment = new Appointment(req.body)
@@ -45,36 +65,22 @@ router.post('/addAppointment', function (req, res) {
     })
     .catch(err => {
       res.status(200).json({ message: 'err' })
-      console.log({message: err.message})
+      console.log({ message: err.message })
     })
 })
-
-
-// fetch users that matches in search tab
-router.get('/search', function(req,res){
-  User.find({address: req.body.address, service1: req.body.service, service2:req.body.service}, (err,users)=>{
-    if(err){
-      res.send(err)
-    }
-    res.json({data:users})
-  })
-})
-
 var serviceProvider;
 router.post('/card/:id', function (req, res) {
-  User.find({ _id:req.params.id }, (err, user) => {
+  User.find({ _id: req.params.id }, (err, user) => {
     if (err) {
       res.send(err);
     }
     serviceProvider = user;
   });
 })
-
 //fetch data of service provider in set appointment
 router.get('/setAppointment', function (req, res) {
-  res.send({data: serviceProvider});
+  res.send({ data: serviceProvider });
 })
-
 //fetch current User
 router.get('/profile', function (req, res) {
   User.find({ _id: userId }, (err, user) => {
@@ -85,17 +91,15 @@ router.get('/profile', function (req, res) {
     //console.log(user)
   });
 })
-
 //fetch all users
-router.get('/dashboard', function(req,res){
-  User.find({}, (err,users)=>{
-    if(err){
+router.get('/dashboard', function (req, res) {
+  User.find({}, (err, users) => {
+    if (err) {
       res.send(err)
     }
-    res.json({data:users})
+    res.json({ data: users })
   })
 })
-
 //login authentication
 router.post('/auth', function (req, res, next) {
   if (req.body.username && req.body.password) {
@@ -103,13 +107,10 @@ router.post('/auth', function (req, res, next) {
       if (error || !user) {
         var err = new Error('Wrong email or password.');
         res.status(401).json({ message: err.message })
-        //return next(err);
       } else {
         req.session.userId = user._id;
-        //req.session.password = user.password;
         userId = req.session.userId;
         res.status(200).json({ message: 'ok' })
-        //return res.redirect('modules/basic/dashboard.vue');
       }
     });
   } else {
@@ -118,7 +119,6 @@ router.post('/auth', function (req, res, next) {
     return next(err);
   }
 })
-
 //register save to db
 router.post('/create', function (req, res) {
   let user = new User(req.body)
@@ -132,7 +132,6 @@ router.post('/create', function (req, res) {
       console.log('error')
     })
 })
-
 //update user's profile
 router.post('/updateProfile', function (req, res) {
   var email = req.body.email;
@@ -148,21 +147,23 @@ router.post('/updateProfile', function (req, res) {
   var service = req.body.service;
   var schedDate = req.body.date;
   var time = req.body.time;
-  User.update({ _id :userId}, { $set: {
-  email:email,
-  address:address,
-  fullname:fullname,
-  username :username,
-  fb : fb,
-  contactNo : contactNo,
-  description : description,
-  Password : Password,
-  img : image,
-  post : post,
-  serviceOffered : service,
-  date: schedDate,
-  time:time
- } }, function (err, result) {
+  User.update({ _id: userId }, {
+    $set: {
+      email: email,
+      address: address,
+      fullname: fullname,
+      username: username,
+      fb: fb,
+      contactNo: contactNo,
+      description: description,
+      Password: Password,
+      img: image,
+      post: post,
+      serviceOffered: service,
+      date: schedDate,
+      time: time
+    }
+  }, function (err, result) {
     console.log(result)
     if (err) {
       console.log(err);
@@ -174,7 +175,6 @@ router.post('/updateProfile', function (req, res) {
     }
   });
 })
-
 // GET route after registering
 router.get('/dashboard', function (req, res, next) {
   User.findById(req.session.userId)
@@ -190,7 +190,6 @@ router.get('/dashboard', function (req, res, next) {
       }
     });
 });
-
 // GET for logout logout
 router.get('/logout', function (req, res, next) {
   if (req.session) {
@@ -204,6 +203,5 @@ router.get('/logout', function (req, res, next) {
     });
   }
 });
-
 module.exports = router;
 

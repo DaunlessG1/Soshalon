@@ -20,7 +20,6 @@
     #title{
         color: $primary !important;
     }
-
     #logo{
         width: 200px;
         height: auto
@@ -31,7 +30,6 @@
     .navbar-dark .navbar-nav .nav-link{
     color:#00BCD4;
 }
-
 </style>
 
 

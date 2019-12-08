@@ -32,7 +32,7 @@
                             <form  enctype="multipart/form-data">
                               <div class="fields">
                                 <br>
-                                <input type="file" ref="file" name="file" @change="onSelect()" accept="images/*">
+                                <input type="file" ref="file" name="file" @change="onSelect()">
                               </div>
                              
                             </form>
@@ -53,8 +53,9 @@
                                       class="form-control"
                                       type="text"
                                       name="name"
-                                      v-model="input.fullname"
-                                      :placeholder="[[ this.fullname ]]"
+                                      value = this.fullname
+                                      v-model="fullname"
+                                     
                                     >
                                   </div>
                                 </div>
@@ -65,8 +66,9 @@
                                       class="form-control"
                                       type="text"
                                       name="username"
-                                      v-model="input.username"
-                                      :placeholder="[[ this.username ]]">
+                                      value = this.username
+                                      v-model="username"
+                                      >
                                   </div>
                                 </div>
                               </div>
@@ -78,8 +80,9 @@
                                       class="form-control"
                                       type="text"
                                       name="email"
-                                      v-model="input.email"
-                                      :placeholder="[[ this.email ]]">
+                                      value = this.email
+                                      v-model="email"
+                                      >
                                   </div>
                                 </div>
                               </div>
@@ -91,8 +94,9 @@
                                       class="form-control"
                                       type="text"
                                       name="address"
-                                      v-model="input.address"
-                                      :placeholder="[[ this.address ]]"
+                                      value = this.address
+                                      v-model="address"
+                                      
                                     >
                                   </div>
                                 </div>
@@ -104,8 +108,9 @@
                                     <input
                                       class="form-control"
                                       type="text"
-                                      v-model="input.fb"
-                                      :placeholder="[[this.fb]]"
+                                      value = this.fb
+                                      v-model="fb"
+                                      
                                     >
                                   </div>
                                 </div>
@@ -117,8 +122,9 @@
                                     <input
                                       class="form-control"
                                       type="text"
-                                      v-model="input.contactNo"
-                                      :placeholder="[[this.contactNo]]"
+                                      value = this.contactNo
+                                      v-model="contactNo"
+                                      
                                     >
                                   </div>
                                 </div>
@@ -137,8 +143,9 @@
                                   <div class="form-group">
                                     <label>About</label>
                                     <textarea
-                                      v-model="input.description"
-                                      :placeholder="[[this.description]]"
+                                      value = this.description
+                                      v-model="description"
+                                      
                                       class="form-control"
                                       rows="5"
                                     ></textarea>
@@ -152,11 +159,11 @@
                             <div class="col mb-3">
                             <div class="form-group">
                               <label>Date :  </label>
-                              <input type="date" id="myDate"  v-model="input.date">
+                              <input type="date" id="myDate"  v-model="date" value = this.date>
                               <label>From :  </label>
-                              <input type="time" name="timeFrom" v-model="input.timeFrom">
+                              <input type="time" name="timeFrom" v-model="timeFrom" value = this.timeFrom>
                               <label>To :   </label>
-                              <input type="time" name="timeTo"  v-model="input.timeTo">
+                              <input type="time" name="timeTo"  v-model="timeFrom" value = this.timeTo>
                               <br>
                               <span>Date: {{date +"--- "+ time}}</span>
                             </div>
@@ -175,8 +182,9 @@
                                     <input
                                       class="form-control"
                                       type="password"
-                                      :placeholder="[[this.password]]"
-                                      v-model="input.currentPassword"
+                                      value = this.password
+                                      
+                                      v-model="password"
                                     >
                                   </div>
                                 </div>
@@ -189,7 +197,7 @@
                                       class="form-control"
                                       type="password"
                                       placeholder
-                                      v-model="input.newPassword"
+                                      v-model="newPassword"
                                     >
                                   </div>
                                 </div>
@@ -205,7 +213,7 @@
                                       class="form-control"
                                       type="password"
                                       placeholder
-                                      v-model="input.ConfirmPassword"
+                                      v-model="ConfirmPassword"
                                     >
                                   </div>
                                 </div>
@@ -268,7 +276,7 @@ export default {
       address:"",
       service:[],
       checkedService :[],
-      Postchecked: "false",
+      Postchecked: false,
       file: "",
       fullname: "",
       username: "",
@@ -277,24 +285,13 @@ export default {
       description: "",
       password: "",
       img: "",
+       ConfirmPassword: "",
+       currentPassword: "",
+        newPassword: "",
       date:"2019-01-01",
       timeFrom:"00:00:00",
-      timeTo:"00:00:00",
-      input: {  
-        email:"",
-        address:"",  
-        fullname: "",
-        username: "",
-        fb: "",
-        contactNo: "",
-        description: "",
-        currentPassword: "",
-        newPassword: "",
-        ConfirmPassword: "",
-        date:"",
-        timeFrom:"",
-        timeTo:""
-      }
+      timeTo:"00:00:00"
+ 
     };
   },
   components: {
@@ -338,28 +335,28 @@ export default {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {   
-      alert(this.checkedService)
+      //alert(this.checkedService)
       if (this.input.password != "") {
         var data = {
-          email: this.input.email,
-          address: this.input.address,
-          fullname: this.input.fullname,
-          fb: this.input.fb,
-          contactNo: this.input.contactNo,
-          description: this.input.description,
-          Password: this.input.newPassword,
-          username: this.input.username,
+          email: this.email,
+          address: this.address,
+          fullname: this.fullname,
+          fb: this.fb,
+          contactNo: this.contactNo,
+          description: this.description,
+          Password: this.newPassword,
+          username: this.username,
           imagepath: this.img,
           post: this.Postchecked,
           service: this.checkedService,
-          date:this.input.date,
-          time : this.input.timeFrom +" "+ this.input.timeTo
+          date:this.date,
+          time : this.timeFrom +" "+ this.timeTo
         };
       }
         axios.post("http://localhost:3000/updateProfile", data).then(
               response => {
                 if (response.data.message == "ok") {
-                  console.log("ok");
+                  //console.log("ok");
                   this.alertSuccess();
                 }
               },

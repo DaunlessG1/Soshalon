@@ -3,10 +3,10 @@
       <div>
         <b-card no-body class="overflow-hidden" style="max-width: 540px;">
           <b-row no-gutters>
-            <b-col md="6">
+            <b-col md="5">
               <b-card-img :src="img" class="rounded-0"></b-card-img>
             </b-col>
-            <b-col md="6">
+            <b-col md="7">
               <b-card-body :title="fullname">
                 <b-card-text>
                  Adress : {{address}}<br><br>
@@ -104,9 +104,9 @@ hr{
   color: white;
 }
 .rounded-0{
-  height: 200px;
-  width: auto;
-  max-width: 250px;
+  height: auto;
+  width: 200px;
+  max-width: 200px;
   max-height: 250px
   
 }

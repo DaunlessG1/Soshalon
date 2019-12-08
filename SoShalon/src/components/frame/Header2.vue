@@ -8,18 +8,24 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-form-input id="addressInput" size="ml" class="mb-3" placeholder="Enter address" value=""></b-form-input>
+            <b-form-input
+              id="addressInput"
+              size="ml"
+              class="mb-3"
+              placeholder="Enter address"
+              v-model="search"
+            ></b-form-input>
           </b-nav-form>
 
           <b-nav-item>
-            <b-form-select class="mb-3" id="serviceSelect">
-              <option selected="selected">Select Service</option>
+            <b-form-select class="mb-3" id="serviceSelect" v-model="selected">
+              <option :selected="selected">Select Service</option>
               <option value="Nail Polish">Nail Polish</option>
               <option value="Hair Cut">Hair Cut</option>
             </b-form-select>
           </b-nav-item>
           <b-nav-item>
-            <b-button pill variant="info" v-on:click="search()">Search</b-button>
+            <b-button pill variant="info" @click="search1()">Search</b-button>
           </b-nav-item>
           <img id="profile" :src="this.img">
           <b-nav-item-dropdown id="my-nav-dropdown" toggle-class="nav-link-custom" right>
@@ -33,7 +39,7 @@
             <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item @click="viewAppointments()">VIEW APPOINTMENTS</b-dropdown-item>
             <b-dropdown-divider></b-dropdown-divider>
-            <b-dropdown-item  @click="logout()">SIGN OUT</b-dropdown-item>
+            <b-dropdown-item @click="logout()">SIGN OUT</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -46,10 +52,15 @@ import router from "router";
 import axios from "axios";
 export default {
   name: "Header2",
+  props:{
+    selected:'',
+    search: "",
+  },
   data() {
     return {
-      address:$("#addressInput").val(),
-      service:$("#serviceSelect :selected").val(),
+      
+      address: $("#addressInput").val(),
+      service: $("#serviceSelect :selected").val(),
       username: "",
       email: "",
       img: ""
@@ -63,30 +74,19 @@ export default {
         this.img = response.data.data[i].img;
         console.log(this.img);
       }
-      //alert(response.data.data.email)
     });
+
   },
+
   methods: {
-    search(){
-      var data = {
-        address: this.address,
-        service: this.service
-      };
-      axios.post("http://localhost:3000/search", data).then(
-        response => {
-          for (var i in response.data.data) {
-            console.log(response.data.data[i])
-          }
-          // if (response.data.message == "ok") {
-          //   console.log("ok")
-          //   //router.push({ path: "/dashboard" });
-          // }
-          // if(response.data.message == "can't find any data"){
-          //     alert(response.data.message)
-          // } 
-        },
-        err => {
-          console.log(err); 
+    search1() {
+      var data ={
+        address: this.search,
+        service: this.selected
+      }
+      axios.post("http://localhost:3000/search" ,data).then(
+        response =>{
+          console.log(response)
         }
       );
     },
@@ -195,5 +195,8 @@ body {
 #address {
   width: 195px;
   margin-left: 65%;
+}
+.dropdown-item {
+  color: rgba(0, 188, 212, 0.8);
 }
 </style>

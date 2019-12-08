@@ -47,8 +47,9 @@
                                   <div>
                                     <label id="service">Service:</label>
                                     <div id="app">
-                                      <select v-model="selected">
-                                          <option v-for="service in services" v-bind:value="{ service: service.servicename}">{{ service.servicename }}
+                                      <select id="select" v-model="selected" class="selectpicker" >
+                                          <option v-for="service in services" v-bind:key="service.servicename">
+                                            {{ service.servicename }}
                                           </option>
                                       </select>
                                       <br>
@@ -83,7 +84,7 @@
                                 </div>
                                 </div>
                      
-                                <div class="col">
+                               <div class="col">
                                   <label id="appointment">PERSONAL DETAILS</label>
                                   <div class="form-group">
                                     <label id="service">Fullname:</label>
@@ -106,15 +107,8 @@
                                       value
                                       v-model="input.address2"
                                     />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col">
-                                 
-                                </div>
-                                <div class="col">
-                                  <label id="appointment">CONTACT DETAILS</label>
+                                    <br>
+                                    <label id="appointment">CONTACT DETAILS</label>
                                   <div class="form-group">
                                     <label id="service">Contact number:</label>
                                     <input
@@ -123,9 +117,6 @@
                                       placeholder="Enter phone number"
                                       v-model="input.contactNo2"
                                     />
-                                  </div>
-                                  
-                                  <div class="form-group">
                                     <label id="service">Messenger:</label>
                                     <input
                                       class="form-control"
@@ -133,15 +124,24 @@
                                       placeholder="Add messenger here..."
                                       v-model="input.messenger2"
                                     />
+                                  </div>
                                 </div>
                                 </div>
                               </div>
+                              </div>
+                               <div class="row">
                                 <div class="col mb-3">
                                   <div class="col d-flex justify-content-end">
-                                    <button v-on:click="alertDisplay1()" class="btn btn-danger">CANCEL</button>
-                                    <br>
-                                    <br>
-                                    <button  @click="submit()" class="btn btn-info">SUBMIT</button>
+                                    <b-button
+                                      v-on:click="alertDisplay1()"
+                                      variant="danger"
+                                    >CANCEL</b-button>
+                                    <br />
+                                    <br />
+                                    <b-button
+                                      v-on:click="submit()"
+                                      variant="info"
+                                    >SUBMIT</b-button>
                                   </div>
                                 </div>
                               </div>
@@ -161,6 +161,7 @@
     <br />
     <br />
   </div>
+
 </template>
 <script>
 import $ from "jquery";
@@ -252,7 +253,6 @@ export default {
       });
     },
     submit() {
-     //alert("fdasf")
       var data = {
         ServiceProviderId: this.ServiceProviderId,
         fullname: this.input.fullname2,
@@ -321,10 +321,13 @@ p {
   color: #00bcd4;
   font-weight: bold;
 }
-.image[data-v-30867a82] {
+.image {
     width: auto;
-    height: 150px;
+    height: 140px;
     max-width: 150px;
-    max-height: 150px;
+    max-height: 140px;
+}
+.select {
+  width: 50%;
 }
 </style>
