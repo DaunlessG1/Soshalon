@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
     cb(null, './public/uploads/')
   },
   filename: function (req, file, callback) {
-    callback(null, file.originalname);
+    callback(null, Date.now() + file.originalname);
   }
 });
 router.post('/api/file', function (req, res) {
@@ -25,27 +25,10 @@ router.post('/api/file', function (req, res) {
     }
     console.log(req.file)
     res.send(req.file)
-    //res.end("File is uploaded");
   });
 });
-var data = {
-  address: "",
-  service: ""
-}
-//get search
-router.post('/search', (req, res) => {
-  data.address = req.body.address;
-  data.service = req.body.service;
-  data.address = data.address.toLocaleLowerCase()
-  data.service = data.service.toLocaleLowerCase()
-  console.log(data.address)
-  console.log(data.service)
-  //res.send(data)
-})
-//send search
-router.get('/getsearch', (req, res) => {
-  res.send(data)
-})
+
+
 //fetch all appointments
 router.get('/appointments', function (req, res) {
   Appointment.find({ ServiceProviderId: userId }, (err, appointments) => {

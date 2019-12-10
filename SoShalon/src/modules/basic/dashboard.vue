@@ -1,16 +1,37 @@
 <template>
   <div id="dashboard">
     <Header2></Header2>
-    <div class="result_part">
-      <div v-for="user in users" v-bind:key="user._id">
-        <serviceProviderCard
-          v-bind:img="user.img"
-          v-bind:id="user._id"
-          v-bind:fullname="user.fullname"
-          v-bind:address="user.address"
-          v-bind:sched="user.date + ' - ' + user.time"
-          v-bind:serviceOffered="user.serviceOffered"
-        />
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <b-form-input
+            id="addressInput"
+            size="ml"
+            placeholder="Search address"
+            v-model="search"
+          ></b-form-input>
+        </div>
+        <div class="col-md-6">
+          <b-form-select id="serviceSelect" v-model="selected">
+            <option :selected="selected">Search Service</option>
+            <option value="Nail Polish">Nail Polish</option>
+            <option value="Hair Cut">Hair Cut</option>
+          </b-form-select>
+        </div>
+      </div>
+  
+    <div class="row">
+      <div class="col-md-6">
+        <div v-for="user in filteredList">
+          <serviceProviderCard
+            v-bind:img="user.img"
+            v-bind:id="user._id"
+            v-bind:fullname="user.fullname"
+            v-bind:address="user.address"
+            v-bind:sched="user.date + ' - ' + user.time"
+            v-bind:serviceOffered="user.serviceOffered"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -33,11 +54,12 @@ export default {
 
   data() {
     return {
+      selected:"Search Service",
+      search:"",
       users: []
     };
   },
   mounted() {
- 
     axios.get("http://localhost:3000/dashboard").then(response => {
       for (var i in response.data.data) {
         if(response.data.data[i].post == true) {
@@ -48,13 +70,11 @@ export default {
     });
   },
   computed: {
-    // filteredList() {
-    //   var s = search;
-    //   alert(s)
-    //   return this.users.filter(user => {
-    //     return user.address.toLowerCase().includes(s.toLowerCase())
-    //   })
-    // }
+    filteredList() {
+      return this.users.filter(user => {
+        return user.address.toLowerCase().includes(this.search.toLowerCase()) || user.serviceOffered.includes(this.selected)
+      })
+    }
   },
   methods: {
     format(value, event) {
@@ -79,5 +99,15 @@ body {
   background-image: url("/bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+}
+#serviceSelect,#addressInput{
+  width:50%;
+  margin-left:30%;
+  opacity: 0.5;
+  
+}
+#serviceSelect:hover,#addressInput:hover{
+  opacity: 1.0;
+  filter: alpha(opacity=100);
 }
 </style>

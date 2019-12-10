@@ -182,8 +182,6 @@
                                     <input
                                       class="form-control"
                                       type="password"
-                                      value = this.password
-                                      
                                       v-model="password"
                                     >
                                   </div>
@@ -285,9 +283,9 @@ export default {
       description: "",
       password: "",
       img: "",
-       ConfirmPassword: "",
-       currentPassword: "",
-        newPassword: "",
+      ConfirmPassword: "",
+      currentPassword: "",
+      newPassword: "",
       date:"2019-01-01",
       timeFrom:"00:00:00",
       timeTo:"00:00:00"
@@ -336,7 +334,7 @@ export default {
     },
     updateProfile() {   
       //alert(this.checkedService)
-      if (this.input.password != "") {
+      if (this.password != "") {
         var data = {
           email: this.email,
           address: this.address,
@@ -354,15 +352,17 @@ export default {
         };
       }
         axios.post("http://localhost:3000/updateProfile", data).then(
-              response => {
-                if (response.data.message == "ok") {
-                  //console.log("ok");
-                  this.alertSuccess();
-                }
-              },
-              err => {
-                console.log(err);
-              });
+          response => {
+          if (response.data.message == "ok") {
+            this.alertSuccess();
+          }
+          else{
+            console.log("error")
+          }
+          },
+          err => {
+            console.log(err);
+          });
     },
     onSelect() {
       //const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];

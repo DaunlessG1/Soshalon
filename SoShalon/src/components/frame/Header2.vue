@@ -7,26 +7,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
-            <b-form-input
-              id="addressInput"
-              size="ml"
-              class="mb-3"
-              placeholder="Enter address"
-              v-model="search"
-            ></b-form-input>
-          </b-nav-form>
 
-          <b-nav-item>
-            <b-form-select class="mb-3" id="serviceSelect" v-model="selected">
-              <option :selected="selected">Select Service</option>
-              <option value="Nail Polish">Nail Polish</option>
-              <option value="Hair Cut">Hair Cut</option>
-            </b-form-select>
-          </b-nav-item>
-          <b-nav-item>
-            <b-button pill variant="info" @click="search1()">Search</b-button>
-          </b-nav-item>
           <img id="profile" :src="this.img">
           <b-nav-item-dropdown id="my-nav-dropdown" toggle-class="nav-link-custom" right>
             <img id="editprofile" :src="this.img">
@@ -52,15 +33,8 @@ import router from "router";
 import axios from "axios";
 export default {
   name: "Header2",
-  props:{
-    selected:'',
-    search: "",
-  },
   data() {
-    return {
-      
-      address: $("#addressInput").val(),
-      service: $("#serviceSelect :selected").val(),
+    return { 
       username: "",
       email: "",
       img: ""
@@ -79,17 +53,6 @@ export default {
   },
 
   methods: {
-    search1() {
-      var data ={
-        address: this.search,
-        service: this.selected
-      }
-      axios.post("http://localhost:3000/search" ,data).then(
-        response =>{
-          console.log(response)
-        }
-      );
-    },
     format(value, event) {
       return value.toLowerCase();
     },
