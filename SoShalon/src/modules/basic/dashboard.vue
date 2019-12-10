@@ -11,13 +11,7 @@
             v-model="search"
           ></b-form-input>
         </div>
-        <div class="col-md-6">
-          <b-form-select id="serviceSelect" v-model="selected">
-            <option :selected="selected">Search Service</option>
-            <option value="Nail Polish">Nail Polish</option>
-            <option value="Hair Cut">Hair Cut</option>
-          </b-form-select>
-        </div>
+        
       </div>
   
     <div class="row">
@@ -72,7 +66,7 @@ export default {
   computed: {
     filteredList() {
       return this.users.filter(user => {
-        return user.address.toLowerCase().includes(this.search.toLowerCase()) || user.serviceOffered.includes(this.selected)
+        return user.address.toLowerCase().includes(this.search.toLowerCase()) 
       })
     }
   },
@@ -86,6 +80,7 @@ export default {
 </script>
 <style>
 body {
+ 
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
@@ -100,14 +95,19 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
-#serviceSelect,#addressInput{
+#addressInput{
   width:50%;
-  margin-left:30%;
+  margin-left:5%;
   opacity: 0.5;
   
 }
-#serviceSelect:hover,#addressInput:hover{
+#addressInput:hover{
   opacity: 1.0;
   filter: alpha(opacity=100);
 }
+#dashboard{
+
+  
+}
+
 </style>

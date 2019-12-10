@@ -1,6 +1,6 @@
 <template>
   <div id="header">
-    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar toggleable="lg" type="dark" variant="dark" >
       <b-navbar-brand @click="dashboard()">
         <img id="logo" src="\logo.png">
       </b-navbar-brand>
@@ -119,18 +119,7 @@ export default {
   border: 2px solid #f8f9fa;
   border-radius: 0.25rem;
 }
-#search {
-  background-color: rgba(0, 0, 0, 0.3);
-}
-.search-btn {
-  background-color: rgba(0, 188, 212, 0.8);
-  border-radius: 25px;
-  border-color: #00bcd4;
-  width: 110px;
-  height: 35px;
-  margin-left: 4%;
-  color: #fff;
-}
+
 .btn-secondary {
   color: #545b62;
   background-color: rgba(255, 255, 255, 0.8);
@@ -162,4 +151,5 @@ body {
 .dropdown-item {
   color: rgba(0, 188, 212, 0.8);
 }
+
 </style>

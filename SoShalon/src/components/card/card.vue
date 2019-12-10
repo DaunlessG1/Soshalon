@@ -13,7 +13,8 @@
                  Available Schedule : {{sched}}<br>
                  Offered Services : {{serviceOffered}}<hr>
 
-                 <a href="#" class="card-link">More</a> 
+                  
+                 
                  <a href="#" class="card-link" @click ="set()">Set Appointment</a>
                 </b-card-text>
               </b-card-body>
@@ -47,7 +48,8 @@ export default {
     set(){
       axios.post("http://localhost:3000/card/"+this.id)
       router.push({path : "/setAppointment"})  
-      }
+    }
+    
   }
 };
 </script>
