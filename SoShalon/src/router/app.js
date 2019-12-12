@@ -49,7 +49,7 @@ export default {
         meta: {
           token: true
         }
-        
+
       }
     ]
   }

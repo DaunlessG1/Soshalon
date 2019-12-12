@@ -78,7 +78,7 @@
                                     <label>Email</label>
                                     <input
                                       class="form-control"
-                                      type="text"
+                                      type="email"
                                       name="email"
                                       value = this.email
                                       v-model="email"
@@ -163,7 +163,7 @@
                               <label>From :  </label>
                               <input type="time" name="timeFrom" v-model="timeFrom" value = this.timeFrom>
                               <label>To :   </label>
-                              <input type="time" name="timeTo"  v-model="timeFrom" value = this.timeTo>
+                              <input type="time" name="timeTo"  v-model="timeTo" value = this.timeTo>
                               <br>
                               <span>Date: {{date +"--- "+ time}}</span>
                             </div>
@@ -297,7 +297,6 @@ export default {
   },
   mounted() {
     axios.get("http://localhost:3000/profile").then(response => {
-      //this.username = response.data.data.username
       for (var i in response.data.data) {
         this.email = response.data.data[i].email;
         this.address =response.data.data[i].address;
@@ -333,7 +332,6 @@ export default {
       router.push({ path: "/dashboard" });
     },
     updateProfile() {   
-      //alert(this.checkedService)
       if (this.password != "") {
         var data = {
           email: this.email,

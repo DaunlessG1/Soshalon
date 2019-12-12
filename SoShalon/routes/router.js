@@ -51,6 +51,7 @@ router.post('/addAppointment', function (req, res) {
       console.log({ message: err.message })
     })
 })
+
 var serviceProvider;
 router.post('/card/:id', function (req, res) {
   User.find({ _id: req.params.id }, (err, user) => {

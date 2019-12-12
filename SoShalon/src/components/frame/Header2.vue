@@ -61,6 +61,7 @@ export default {
     },
     logout() {
       router.push({ path: "/" });
+      sessionStorage.setItem("token", false);
     },
     viewAppointments() {
       router.push({ path: "/appointments" });

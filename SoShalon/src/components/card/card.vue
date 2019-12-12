@@ -1,60 +1,87 @@
 <template>
+  <div>
     <div>
-      <div>
-        <b-card no-body class="overflow-hidden" style="max-width: 540px;">
-          <b-row no-gutters>
-            <b-col md="5">
-              <b-card-img :src="img" class="rounded-0"></b-card-img>
-            </b-col>
-            <b-col md="7">
-              <b-card-body :title="fullname">
-                <b-card-text>
-                 Adress : {{address}}<br><br>
-                 Available Schedule : {{sched}}<br>
-                 Offered Services : {{serviceOffered}}<hr>
+      <b-card no-body class="overflow-hidden" style="max-width: 540px;">
+        <b-row no-gutters>
+          <b-col md="5">
+            <b-card-img :src="img" class="rounded-0"></b-card-img>
+          </b-col>
+          <b-col md="7">
+            <b-card-body :title="fullname">
+              <b-card-text>
+                Email : {{email}}
+                <br>
+                Fb Messenger : {{fb}}
+                <br>    
+                Contact No : {{contact}}
+                <br>          
+                Adress : {{address}}
+                <br>
+                Available Schedule : {{sched}}
+                <br>
+                Offered Services : {{serviceOffered}}
+                <br>
+                About : {{description}}
+                <br>
+                <hr>
 
-                  
-                 
-                 <a href="#" class="card-link" @click ="set()">Set Appointment</a>
-                </b-card-text>
-              </b-card-body>
-            </b-col>
-          </b-row>
-        </b-card>
-      </div>
+                <a href="#" class="card-link" v-b-modal.modal-center >More</a>
+                <a href="#" class="card-link" @click="set()">Set Appointment</a>
+              </b-card-text>
+            </b-card-body>
+          </b-col>
+        </b-row>
+      </b-card>
     </div>
+    <div>
+      <b-modal id="modal-center" centered title="BootstrapVue">
+        <p class="my-4">Vertically centered modal!</p>
+      </b-modal>
+    </div>
+  </div> 
 </template>
 
 <script>
 //import AUTH from "services/auth";
+import $ from "jquery";
 import router from "router";
 import axios from "axios";
 export default {
+  component: ("example-modal",
+  {
+    template: "#example-modal"
+  }),
   name: "dashboard",
   props: {
-      id: String,
-      fullname: String,
-      address: String,
-      sched: String,
-      serviceOffered: Array,
-      img: String
+    id: String,
+    fullname: String,
+    address: String,
+    sched: String,
+    serviceOffered: Array,
+    img: String,
+    email : String,
+    contact: String,
+    description: String,
+    fb:String
   },
   data() {
     return {
       isHidden: false
     };
   },
-  methods :{
-    set(){
-      axios.post("http://localhost:3000/card/"+this.id)
-      router.push({path : "/setAppointment"})  
+  methods: {
+    set() {
+      axios.post("http://localhost:3000/card/" + this.id);
+      router.push({ path: "/setAppointment" });
+    },
+    more() {
+      axios.post("http://localhost:3000/card/" + this.id)
+
     }
-    
   }
 };
 </script>
 <style>
-
 .btn-secondary {
   color: #545b62;
   background-color: rgba(255, 255, 255, 0.8);
@@ -84,32 +111,31 @@ body {
   margin-left: 65%;
 }
 .card {
-    position: relative;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: flex;
-    -ms-flex-direction: column;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    flex-direction: column;
-    margin-top: 25px;
-    margin-left: 25px;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color:rgba(0, 0, 0, 0.9);
-    background-clip: border-box;
-    border: 0 solid rgba(0, 0, 0, 0.125);
-    border-radius: 0;
-    color: white;
-}
-hr{
+  position: relative;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  margin-top: 25px;
+  margin-left: 25px;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: rgba(0, 0, 0, 0.9);
+  background-clip: border-box;
+  border: 0 solid rgba(0, 0, 0, 0.125);
+  border-radius: 0;
   color: white;
 }
-.rounded-0{
+hr {
+  color: white;
+}
+.rounded-0 {
   height: auto;
   width: 200px;
   max-width: 200px;
-  max-height: 250px
-  
+  max-height: 250px;
 }
 </style>

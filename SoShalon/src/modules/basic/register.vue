@@ -20,17 +20,21 @@
           v-model="input.cfmpassword"
         >
       </div>
+      <label id="error1">
+        <p>Password did not match!</p>
+      </label>
       <button type="submit" class="login-btn" v-on:click="reg2()">Register</button>
       <div class="bottom-links">
-        <p>
+        <p id="link">
           Already have an account?
-          <br><a href="modules/login.vue">Log in</a>
+          <br><b @click="log()">Log in</b>
         </p>
       </div>
     </form>
   </div>
 </template>
 <script>
+import $ from "jquery";
 import Header from "components/frame/Header.vue";
 import AUTH from "services/auth";
 import router from "router";
@@ -53,19 +57,6 @@ export default {
     };
   },
   methods: {
-    register() {
-      if (this.input.password == this.input.cfmpassword) {
-        AUTH.StoreData(
-          this.input.fname,
-          this.input.lname,
-          this.input.email,
-          this.input.password
-        );
-        router.push({ path: "/login" });
-      } else {
-        alert("your password does not match");
-      }
-    },
     reg2() {
       var data = {
         email: this.input.email,
@@ -89,16 +80,24 @@ export default {
           );
         }
         else{
-          alert("Password did not match")
+          aler("fd")
+           $('#error1').css("visibility", "visible");
         }
       }
-
-
+    },
+    log(){
+      router.push({ path: "/login" });
     }
   }
 };
 </script>
 <style scoped>
+/*--For Small Devices CSS--*/
+@media (max-width: 575px) {
+  #login-form {
+    width: 300px;
+  }
+}
 * {
   font-family: arial;
   box-sizing: border-box;
@@ -126,9 +125,14 @@ body {
   color: #00bcd4;
   font-size: 30px;
 }
-#login-form p {
+#login-form #link {
   font-size: 16px;
-  color: white;
+  color:white;
+}
+#login-form #error1 {
+  font-size: 16px;
+  color:red;
+  visibility: hidden;
 }
 #login-form p a {
   color: #00bcd4;
@@ -176,10 +180,12 @@ body {
   font-size: 13px;
 }
 
-/*--For Small Devices CSS--*/
-@media (max-width: 575px) {
-  #login-form {
-    width: 300px;
-  }
+b {
+  color: #00bcd4;
 }
+b:hover {
+  text-decoration: underline;
+}
+
+
 </style>
